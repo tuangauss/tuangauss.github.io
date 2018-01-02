@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>End-to-end Machine Learning project with R (part 2)</title>
+		<meta charset = "UTF-8">
+		<meta name = "viewport" content = "width = device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+		<script src="https://raw.githubusercontent.com/jrnold/prettify-lang-r-bugs/master/lang-r.js"></script>
+		<style>
+		.w3-sidebar a {font-family: "Roboto", sans-serif}
+		body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
+        p, li{
+        font-family: Open Sans;
+        font-size: 18px;
+        }
+
+        pre {
+		/* use this to wrap around code*/
+		white-space: pre-wrap;
+		}
+		</style>
+	</head>
+	<body class = "w3-content" style = "max-width:1200px" data-gr-c-s-loaded = "true">
+		<!-- Sidebar/menu -->
+		<nav class = "w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style = "z-index:3; width:250px; display: none;" id="mySideBar">
+			<div class = "w3-container w3-display-container w3-padding-16">
+
+				<i onclick = "w3_close()" class = "fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
+				<h3 class = "w3-wide">
+					<a href = "index.html" style = "text-decoration:none"><b>Main</b></a>
+				</h3>
+
+			</div>
+
+			<div class = "w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
+				<a href="#" class="w3-bar-item w3-button">Statistics</a>
+				<a href="#" class="w3-bar-item w3-button">Machine Learning</a>
+				<a href="#" class="w3-bar-item w3-button">Deep Learning</a>
+			</div>
+			<a href = "#" class = "w3-bar-item w3-button w3-padding">Resume</a>
+			<a href = "#footer" class = "w3-bar-item w3-button w3-padding">Contact</a>
+		</nav>
+		<!-- Top menu on small screens -->
+		<header class="w3-bar w3-top w3-hide-large w3-black w3-xlarge">
+		  <div class="w3-bar-item w3-padding-24 w3-wide"><a href = "index.html" style = "text-decoration:none">Main</a></div>
+		  <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-24 w3-right" onclick="w3_open()">
+		  	<i class="fa fa-bars"></i>
+		  </a>
+		</header>
+
+		<!-- Overlay effect when opening sidebar on small screens -->
+		<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor: pointer; display: none;" title="close side menu" id="myOverlay"></div>
+
+		<!-- Main contant: when side bar is visible, shift to the right by 250px -->
+		<div class = "w3-main" style = "margin-left:250px">
+			<div class="w3-row w3-padding-64">
+    			<div class="w3-container" style = "margin-top: 10px">
+      				<h1 class="w3-text-teal">End-to-end Machine Learning project with R (part 2)</h1>
+      				<p><em>This is the second part in the series "End-to-end Machine Learning Porject with R". To see the first part of this series, <a href="full_data_science_project_with_R(part_1).html" style = "text-decoration:none; font-weight: bold">click here</a>.This tutorial covers:</em></p>
+
+      				<ul type = "circle">
+      					<li>Cleaning and preparing data</li>
+      					<li>Fitting models</li>
+      					<li>Fine-tuning models</li>
+      				</ul>
+
+      				<p>This example uses the classic 1990 California Housing dataset and follows the instruction from O'Reily's <em>"Hands-on machine Learning with Scikit-learn and Tensorflow"</em>, albeit in R code.</p>
+
+
+      				<h3 class = "w3-text-teal">III. Prepare data for Machine Learning algorithms:</h3>
+
+					<p>Here comes the bad news: you will spend most of your time, not building models and making cool projections, but cleaning data for machine learning algorithms. Most of the datasets you have will be very messy, with missing value, typos, wrong data types, etc.... Some may not even have the attributes you are looking for. The job of a data scientist is to recognize these issues and rectify them to build useful, repreduciable and scalable model.</p>
+
+					<p>Fortunately, our dataset was relatively clean to deal with. We already saw several issues:</p>
+					<ul type = "circle">
+						<li>Missing data</li>
+						<li>Entries that does not represent actual values</li>
+						<li>Some variables are in the form of factor</li>
+						<li>Variables are of different scales</li>
+					</ul>
+
+					<p>I've briefly discussed the issue with the first three problems, what about the fourth? With a few exceptions, most Machine Learning algorithms don't perform very well when the input data have vastly different scales. We can see it right in our data: the total number of rooms range from 6 to 39,320 while median income ranges from 0 to 15. Thus, we usually scale them by a method called standardization to minimize the effect scale may have on our algorithms.</p>
+
+					<p>In general, depending on the nature of the dataset, We may need to do several steps:</p>
+					<ul>
+						<li>Deal with missing data</li>
+						<li>Create some extra numerical data that can be useful for prediction</li>
+						<li>Make sure that categorical data is in the form of factor</li>
+						<li>Standardize the all the column</li>
+						<li>Creating training set and test set</li>
+					</ul>
+
+					<h4 class = "w3-text-teal">a. Dealing with misisng data</h4>
+
+					<p>There are several ways we can deal with missing data, we can either: </p>
+					<pre class="prettyprint lang-r"> # Method 1: delete the column
+ cal_housing <- subset(cal_housing, select = -c(total_bedroom)) </pre>
+
+					<p>or:</p>
+					<pre class="prettyprint lang-r"> # Method 2: remove the missing NA
+ cal_housing_1 <- cal_housing[complete.cases(cal_housing),]
+ dim (cal_housing_1)
+ # [1] 20433    10
+ # we see that 207 rows with misssing values have been removed</pre>
+
+					<p>or:</p>
+					<pre class="prettyprint lang-r"> # Method 3: impute missing NAs with median
+ cal_housing$total_bedrooms[is.na(cal_housing$total_bedrooms)] <- median(cal_housing$total_bedrooms, na.rm=TRUE)
+ summary(cal_housing$total_bedrooms)
+ #Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ # 1.0   297.0   435.0   536.8   643.2  6445.0 </pre>
+
+ 					<p>In option 3, we can see that I compute the median value on the dataset and impute the missing value of by this median. You can also use other value to impute the missing values, e.g: mean, but usually median is chosen as a good representation of the variables. The nice thing about this option is that you do not have to remove any data entries, which could be valuable in a small dataset. Let's stick with this method in this project</p>
+					
+					<h4 class = "w3-text-teal">b. Other cleaning taks:</h4>
+
+					<p>That's one task out of the way! We still need to remove the entries whose median_house_value exceeds $500,000, create some new useful (hopefully) variables, making sure that our categorical variables are in factor form, and perform feature scaling.</p><p>A very useful tools that can be used for these tasks are <strong>dplyr</strong> with piping techniques. Again, without going too much into the details, here is how the entire data transforming pipeline is effectively and succintly coded using <strong>dplyr</strong>. Here, you can see that I have:</p>
+					<ul>
+						<li>Removed entries whose median_house_value >= 500,000 </li>
+						<li>Created two predictors: rooms per house and population per house</li>
+						<li>Made sure that ocean_proximity is encoded as a factor</li>
+						<li>Scaled all numerical variables using standardization techniques as explained</li>
+					</ul>
+
+					<pre class="prettyprint lang-r"> library(dplyr)
+ cal_housing <- cal_housing %>%
+	  filter(median_house_value < 500000) %>%
+	  mutate(rooms_per_house = total_rooms / households) %>%
+	  mutate(population_per_house = population / households) %>%
+	  mutate(ocean_proximity = as.factor(ocean_proximity)) %>%
+	  mutate_at(vars(-ocean_proximity, -median_house_value, -median_income), funs(scale)) %>%
+	  data.matrix %>% data.frame </pre>
+
+					<h4 class = "w3-text-teal">c. Split to training set and test set:</h4>
+
+					<p>It may sound strange at first to split our dataset. I mean: if we want our algorithms to be as 'smart' as possible, wouldn't we want to feed it with as much information as possible? This is true, however, usually, we don't have a fix algorithm we want to fit to begin with. We want to try different models and see which one performs the best. You will see how I compare the performance of three different Machine Learning Algorithms in this example. The test set allows you to compare different models in an unbiased way, by basing your comparisons in data that were not use in any part of your training/hyperparameter selection process. </p>
+
+					<p>Creating test set is very simple: just pick some instances randomly, usually 20% of the dataset (Ok, 10% is fine) and set them aside: </p>
+
+					<pre class="prettyprint lang-r"> set.seed(365)
+ train_id <- sample(nrow(cal_housing), size = 0.8*nrow(cal_housing))
+ train_set <- cal_housing[train_id,]
+ test_set <- cal_housing[-train_id,]
+ print (paste(nrow(train_set), "train +", nrow(test_set), "test"))
+ # [1] "15718 train + 3930 test" </pre>
+
+					<p>This purely random sampling method is generally fine if we have a large dataset, but if it is not, you run the risk of introducing significant sampling bias. You can read more about it here. In short, it is the phenomenon when the sample is not represetative of the actual population. We want to guarantee that the test set is representative of the population. This is called <strong>stratified sampling</strong>.</p>
+
+					<p>What does it mean for our dataset? Let's say that we think median income is a very important attribute to predict median housing prices. We want to ensure that the test set is representatiuve of the various categories of incomes in the whole dataset (that mean, we should have the same representation of the 0.1%, 1%, 10% richest - Ok, we are not going into that much details though). Since our median income is continuous variable, we have to convert them into categorical variables of different levels (I choose 5 levels of income) and perform stratified sampling to create the test set. This can be easily done with the <strong>caret package</strong> in R.</p>
+
+					<pre class="prettyprint lang-r"> #Convert median income into categorical variables with 5 levels
+ cal_housing <- cal_housing %>% 
+	 mutate(income_level = ceiling(median_income/2)) %>%
+	 mutate(income_level = factor(ifelse(income_level >= 5, 5, income_level))) %>%
+		 select(-median_income)
+plot(cal_housing$income_level)	</pre>
+ 					<p>(Need a photo here)</p>
+
+					<pre class="prettyprint lang-r"> #Stratified Sampling
+ library (caret)						
+ train_str_id <- createDataPartition(cal_housing$income_level, p =.8,
+                                    list = FALSE, times = 1)
+ train_str <- cal_housing[train_str_id,]
+ test_str <- cal_housing[-train_str_id,]</pre>
+
+ 					<p> We can compare the performance of stratified sampling and random sampling by seeing how well each method represents the distribution of income level in the overall data set ('overall' column):</p>
+
+					<table class="w3-table w3-bordered w3-striped w3-border test w3-hoverable">
+					<tbody><tr class="w3-green">
+				  		<th>Income level</th>
+				  		<th>Overall proportion</th>
+				  		<th>str_sampling proportion</th>
+				  		<th>normal_sampling proportion</th>
+				  		<th>str_sampling error(%)</th>
+				  		<th>normal_sampling error(%)</th>
+					</tr></tbody>
+					<tbody>
+						<tr>
+					  		<th>1</th>
+					  		<th>0.12413477</th>
+					  		<th>0.12401324</th>
+					  		<th>0.12391858</th>
+					  		<th>-0.09790192</th>
+					  		<th>-0.1741631</th>
+						</tr>
+						<tr>
+					  		<th>2</th>
+					  		<th>0.50819422</th>
+					  		<th>0.50853069</th>
+					  		<th>0.49898219</th>
+					  		<th>0.06620830</th>
+					  		<th>-1.8126987</th>
+						</tr>
+						<tr>
+					  		<th>3</th>
+					  		<th>0.28104642</th>
+					  		<th>0.28113063</th>
+					  		<th>0.28651399</th>
+					  		<th>0.02996556</th>
+					  		<th>1.9454359</th>
+						</tr>
+						<tr>
+					  		<th>4</th>
+					  		<th>0.07395155</th>
+					  		<th>0.07384772</th>
+					  		<th>0.07811705</th>
+					  		<th>-0.14039777</th>
+					  		<th>5.6327437</th>
+						</tr>
+						<tr>
+					  		<th>5</th>
+					  		<th>0.01267305/th>
+					  		<th>0.01247772</th>
+					  		<th>0.01246819</th>
+					  		<th>-1.54128099</th>
+					  		<th>-1.6164403</th>
+						</tr>
+					</tbody>
+				</table>
+				<p>The table compares the income category proportions in the overall dataset, in the test set generated with stratified sampling and in a test set generated by random sampling. We can see that the stratified sampling generated test set has income category proportions almost identical to those of the dataset, compared to the skewedness of the test set generated by random sampling.</p>
+    			</div>
+    		</div>
+
+			<!-- Footer, contact form and details -->
+			<footer class = "w3-padding-64 w3-light-gray w3-small w3-center" id="footer">
+				<div class = "w3-row-padding">
+					<div class = "w3-col s4">
+						<h4>Contact Form</h4>
+						<p>Got some ideas or cool projects?</p>
+						<!-- Need to see how to work out this-->
+						<form action = "/action_page.php" target="blank">
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Name" name="Name" required>
+							</p>
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Email" name="Email" required>
+							</p>
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Subject" name="Subject" required>
+							</p>
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Message" name="Message" required>
+							</p>
+							<button type = "submit" class ="w3-button w3-block w3-black">Send</button>	
+						</form>
+					</div>
+
+					<!-- Social media-->
+					<div class = "w3-right w3-col s4 w3-justify">
+						<h4>Contact</h4>
+						<p>
+							<i class="fa fa-fw fa-map-marker"></i> Yale University, New Haven
+						</p>
+						<p>
+							<i class= "fa fa-fw fa-phone"></i> (203)-435-6710
+						</p>
+						<p>
+							<i class="fa fa-fw fa-envelope"></i> tuandoan.nguyen@yale.edu
+						</p>
+						<a class="fa fa-facebook-official w3-hover-opacity w3-large" href = "https://www.facebook.com/tuan.doannguyen" style = "text-decoration:none"></a>
+						<a class="fa fa-linkedin w3-hover-opacity w3-large" href = "https://www.linkedin.com/in/tuan-nguyen-doan/" style = "text-decoration:none"></a>
+						<a class="fa fa-instagram w3-hover-opacity w3-large" href = "https://www.instagram.com/t.nguyen.1996/" style = "text-decoration:none"></a>
+						<a class="fa fa-github w3-hover-opacity w3-large" href = "https://github.com/tuangauss" style = "text-decoration:none"></a>
+					</div>		
+				</div>
+			</footer>
+		</div>
+	</body>
+	<script>
+	// Script to open and close sidebar
+	function w3_open(){
+		document.getElementById("mySideBar").style.display = "block";
+		document.getElementById("myOverlay").style.display = "block";
+	}
+
+	function w3_close(){
+		document.getElementById("mySideBar").style.display = "none";
+		document.getElementById("myOverlay").style.display = "none";		
+	}
+	</script>
+</html>

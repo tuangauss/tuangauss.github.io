@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>End-to-end Machine Learning project with R (part 3)</title>
+		<meta charset = "UTF-8">
+		<meta name = "viewport" content = "width = device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+		<script src="https://raw.githubusercontent.com/jrnold/prettify-lang-r-bugs/master/lang-r.js"></script>
+		<style>
+		.w3-sidebar a {font-family: "Roboto", sans-serif}
+		body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
+        p, li{
+        font-family: Open Sans;
+        font-size: 18px;
+        }
+
+        pre {
+		/* use this to wrap around code*/
+		white-space: pre-wrap;
+		}
+		</style>
+	</head>
+	<body class = "w3-content" style = "max-width:1200px" data-gr-c-s-loaded = "true">
+		<!-- Sidebar/menu -->
+		<nav class = "w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style = "z-index:3; width:250px; display: none;" id="mySideBar">
+			<div class = "w3-container w3-display-container w3-padding-16">
+
+				<i onclick = "w3_close()" class = "fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
+				<h3 class = "w3-wide">
+					<a href = "/index.html" style = "text-decoration:none"><b>Main</b></a>
+				</h3>
+
+			</div>
+
+			<div class = "w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
+				<a href="#" class="w3-bar-item w3-button">Statistics</a>
+				<a href="#" class="w3-bar-item w3-button">Machine Learning</a>
+				<a href="#" class="w3-bar-item w3-button">Deep Learning</a>
+			</div>
+			<a href = "#" class = "w3-bar-item w3-button w3-padding">Resume</a>
+			<a href = "#footer" class = "w3-bar-item w3-button w3-padding">Contact</a>
+		</nav>
+		<!-- Top menu on small screens -->
+		<header class="w3-bar w3-top w3-hide-large w3-black w3-xlarge">
+		  <div class="w3-bar-item w3-padding-24 w3-wide"><a href = "/index.html" style = "text-decoration:none">Main</a></div>
+		  <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-24 w3-right" onclick="w3_open()">
+		  	<i class="fa fa-bars"></i>
+		  </a>
+		</header>
+
+		<!-- Overlay effect when opening sidebar on small screens -->
+		<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor: pointer; display: none;" title="close side menu" id="myOverlay"></div>
+
+		<!-- Main contant: when side bar is visible, shift to the right by 250px -->
+		<div class = "w3-main" style = "margin-left:250px">
+			<div class="w3-row w3-padding-64">
+    			<div class="w3-container" style = "margin-top: 10px">
+      				<h1 class="w3-text-teal">End-to-end Machine Learning project with R (part 3)</h1>
+      				<p><em>This is the last part of the series "End-to-end Machine Learning Porject with R". To see the first two parts of this series, click here: <a href="full_data_science_project_with_R(part_1).html" style = "text-decoration:none; font-weight: bold">1</a>,<a href="full_data_science_project_with_R(part_2).html" style = "text-decoration:none; font-weight: bold">2</a> .This tutorial covers:</em></p>
+
+      				<ul type = "circle">
+      					<li>Fitting models</li>
+      					<li>Fine-tuning models</li>
+      				</ul>
+
+      				<p>This example uses the classic 1990 California Housing dataset and follows the instruction from O'Reily's <em>"Hands-on machine Learning with Scikit-learn and Tensorflow"</em>, albeit in R code.</p>
+
+
+      				<h3 class = "w3-text-teal">IV. Fit models on the dataset:</h3>
+      				<p>Now that you have got the data, explored and visualized it, transformed it appropriately and divided it into a training set and a test set, it becomes a lot easier to select and train your Machine Learning Algorithms. </p>
+
+      				<p>Let's start with a fairly straightforward method: <strong>simple linear regression</strong>.</p>
+
+      				<pre class="prettyprint lang-r"> model_lm <- lm(median_house_value~., train_str)</pre>
+
+      				<p> That looks simple. Let's see how our model performs when we apply on our training set and predict it again. A way to measure the perform of this regression task is to use a metric called <strong>Root-mean-square-error (RMSE)</strong>. It is a frequently used measure of the differences between values (sample and population values) predicted by a model or an estimator and the values actually observed. The <strong>RMSE</strong> represents the sample standard deviation of the differences between predicted values and observed values. These individual differences are called <em>residuals</em> when the calculations are performed over the data sample that was used for estimation, and are called <em>prediction errors</em> when computed out-of-sample.</p>
+
+      				<p>We can calculate the RMSE metric as follows:</p>
+
+      				<pre class="prettyprint lang-r"> predict_lm_train <- predict(model_lm, train_str)
+ sqrt(mean((train_str$median_house_value - predict_lm_train)^2)) #square root of sum of differences
+ # [1] 63464.64 </pre>
+
+ 					<p>It works, but not amazingly. To put in context, a <strong>RMSE</strong> error of 63,464 means that on average, the prediction error is around $63,434. If we go back to our dataset and notice how the <em>median_housing_value</em> mostly ranges from $200,000 to $500,000, prediction error could account to up to 30% of the actual value. This is called <strong>underfitting</strong>, where the predictors does not provide enough information or the algorithm is not powerful enough (which is likely to be the case here). </p>
+
+					<p>There are a couple of ways we can proceed:</p>
+					<ul>
+						<li>We can feed better predictors (which is usually impossible)</li>
+						<li>We can develop our algorithms. For linear regression specifically, this could means including interactions, higher-order predictors, etc. (There is a huge literature on these methods)</li>
+						<li>We could try different models</li>
+					</ul>
+
+					<p>For the purpose of this example, let us try different algorithms and see how it perform. I choose <strong>Decision Tree</strong> and <strong>Support Vector Machine Regression</strong>, both are very powerful and capable of detecting complex patterns in our dataset.</p>
+
+					<pre class="prettyprint lang-r"> # Decision tree model
+ library(rpart)
+ model_decision_tree <- rpart(median_house_value~.,data = train_str, method = "anova", control = rpart.control(minsplit = 2, cp=0.001))
+ #make prediction						
+ predict_decision_tree <- predict(model_decision_tree, train_str)
+ #calculate RMSE error
+ sqrt(mean((train_str$median_house_value - predict_decision_tree)^2))
+ # [1] 53320.74 </pre>
+
+ 					<pre class="prettyprint lang-r"> # Support Vector Machine Regression model
+ library(e1071)
+ model_svm <- svm(median_house_value~.,data = train_str, cost = 10)
+ predict_svm <- predict(model_svm, train_str)
+ sqrt(mean((train_str$median_house_value - predict_svm)^2))
+ # [1] 50,342</pre>
+ 					<p>That looks good, using the Decision tree regression model and Support vector machine, we can reduce the internal residuals down to $53,320 and $50,342 respectively, significantly improving from the simple linear regression model in nominal value.</p><p>In fact, the two models perform well that we may run the risk of <strong>overfitting</strong> the data, which means that the algorithms learn so many features unique to the training set that it performs badly to new dataset.</p>
+
+ 					<p>How can we assess overfitting of a model, there are generally 2 methods:</p>
+ 					<ul>
+						<li>Test on the test_set (we usually don't want to touch the test set until we have a model ready to launch)</li>
+						<li>k-fold Cross-validation (Sounds fancy, what is it?)</li>
+					</ul>
+
+					<h5 class = "w3-text-teal">What is k-fold cross-validation?</h5>
+					<p>Cross-validation is a technique to evaluate predictive models by partitioning the original sample into a training set to train the model, and a test set to evaluate it (sounds familiar, yes, it does borrow the idea from partitioning dataset into training/test set)</p>
+
+					<p>In k-fold cross-validation, the original sample is randomly partitioned into k equal size subsamples. Of the k subsamples, a single subsample is retained as the validation data for testing the model, and the remaining k-1 subsamples are used as training data. The cross-validation process is then repeated k times (the folds), with each of the k subsamples used exactly once as the validation data. The k results from the folds can then be averaged (or otherwise combined) to produce a single estimation. The advantage of this method is that all observations are used for both training and validation, and each observation is used for validation exactly once.</p>	
+
+					<p>Sounds straightforward enough, let's perform a 10-fold cross validation technique to objectively assess the power of our 3 algorithms:</p>
+					<pre class="prettyprint linenums lang-r"> # randomly shuffle your data	
+ cal_housing_copy <- cal_housing[sample(nrow(cal_housing)),]
+
+ #Create 10 equally size folds
+ folds <- cut(seq(1,nrow(cal_housing_copy)),breaks=10,labels=FALSE)
+
+ #Perform 10 fold cross validation
+ MSE_lm <- 0
+ MSE_tree <- 0
+ MSE_svm <- 0
+
+ for(i in 1:10){
+     #Segement your data by fold using the which() function 
+     testIndexes <- which(folds==i,arr.ind=TRUE)
+     testData <- cal_housing_copy[testIndexes, ]
+     trainData <- cal_housing_copy[-testIndexes, ]
+    
+     # fit in the models
+     lm_model <- lm(median_house_value~., trainData)
+     tree_model <- rpart(median_house_value~.,data = trainData, method = "anova",
+                control = rpart.control(minsplit = 2, cp = 0.001))
+     svm_model <- svm(median_house_value~.,data = trainData, cost = 10)
+    
+     # make predictions
+     predict1 <- predict(lm_model, testData)
+     predict2 <- predict (tree_model, testData)
+     predict3 <- predict(svm_model, testData)
+    
+     #update MSE
+     MSE_lm <- MSE_lm + sum(folds == i)/nrow(cal_housing_copy) * mean((predict1 - testData$median_house_value)^2)
+     MSE_tree <- MSE_tree + sum(folds == i)/nrow(cal_housing_copy) * mean((predict2 - testData$median_house_value)^2)
+     MSE_svm <- MSE_svm + sum(folds == i)/nrow(cal_housing_copy) * mean((predict3 - testData$median_house_value)^2)
+    
+ }
+
+ sqrt(MSE_lm)
+ # [1] 63879.06
+ sqrt(MSE_tree)
+ # [1] 55583.9
+ sqrt(MSE_svm)
+ # [1] 52585.5</pre>
+ 						<p>So our performace using this technique is generally good, although not as great as when we only use the training set to evaluate the model. The good news is: now we know that in general, <strong>Decision Tree</strong> and <strong>SVM Regression</strong> performs significantly better than a simple linear regression. Now it's time to take them to the next level and make them even better by fine-tuning some hyperparameters.</p>
+
+						<h3 class = "w3-text-teal">V. Fine tuning our model:</h3>
+
+						<p>Now that we have some promising models, we can enhance their performance by fine-tuning the hyperparameters associated with each model. From a technical standpoint, there are many ways you can do this:</p>
+						<ul type = "circle">
+							<li>Just play around the hyperparameters, change them, each time repeating the same process we have done above to come up with a model with good performance. This is a lot of tedious work. Let's think about Decision Tree Regression. Let's say you want to play around with the two hyperparameters: minsplit and cp, each of which you have 4 candidates to try out. This means a combination of 16 different 'models'. That's a lot of manual coding to do.</li>
+
+							<li>Ask a R package to find a good combination of the hyperparameters for us. All you have to do is to tell R what hyperparamters you want to try and what value to try out, and it will automatically compute all the hyperparameters and choose the best model. This is called <strong>Grid Search</strong> and the R package <strong>e1076</strong> does just that.</li></ul>
+
+
+						<p><em>Caveat:</em> Tuning can take a really really long time to run (depending on your resources and algorithm). The code below only experiment  16 combinations for Decision trees and 12 combinations for Support Vector Machine and it still takes 13 hours for my poor CORE I5, 2GB RAM HP to compute. Lesson: get a good laptop or GPU if you want to do some serious machine learning work.</p>
+
+						<p><em>Advise:</em> To do well in fine-tuning, it is important that you know what each hyperparameter does and set a range to try out appropriately. This means that it is in general very important to understand the mechanism behind each algorithms and what roles does each hyperparameters play. You can get away with treating ML algorithms as a blackbox and playing around but in the long run, you won't get really far with Machine Learning. </p>
+
+						<p> First, we try a set of parameters for <strong>Decision tree model</strong>. I decided to search through 2 hyperparameters: <em>minsplit</em> (5 different values) and <em>cp</em> (5 different values). This makes a total of 25 iterations of training and we will get the model that performs the best out of these 25 iterations.</p>
+						
+						<pre class="prettyprint lang-r"> #applying grid search
+ tuneResult1 <- tune.rpart(median_house_value~., data = train_str, minsplit = c(5,10,15, 20), cp = c(0.1,0.01,0.001,0.0001))
+ tune_tree <- tuneResult1$best.model #get the best model
+
+ #find RMSE value of the best model
+ predict_tree <- predict(tune_tree, train_str) 
+ sqrt(mean((train_str$median_house_value - predict_tree)^2))
+ # [1] 40,282</pre>
+
+ 						<p> Let's try applying Grid search to <strong> SVM Regression</strong>. Here, I searched through 2 parameters: <em>cost</em> (4 different values) and <em>gamma</em> (3 different values), making a total of 12 iterations of training </p>
+
+						<pre class="prettyprint lang-r"> #applying grid search
+ tuneResult2 <- tune.svm(median_house_value ~., data = train_str, cost=10^(-1:2), gamma=c(0.1,0,1))
+ tune_svm <- tuneResult2$best.model #get best model
+
+ #find RMSE of the best model
+ predict_svm <- predict (tune_svm, train_str)
+ sqrt(mean((train_str$median_house_value - predict_svm)^2))
+ # [1] 44,399</pre>
+
+
+						<p>That's impressive, we managed to further reduce RMSE of Decision Tree and SVM Regression to 40,282 and 44,399 respectively by fine-tuning the hyperpameters. Notice that this is up to 20,000 or 30% improvement from our naive linear regression model.</p>
+
+						<h4 class = "w3-text-teal">Try on your test set:</H4>
+
+						<p>Now that we have seen which models or parameter combinations perform the best, we can test them on the test set and see how well our models predict new data. There's nothing really fancy about this. Just repeat the prediction and calculation of RMSE, this time on the test set.</p>
+
+						<p>Decision tree regression model:</p>
+						<pre class="prettyprint lang-r"> predict_tree_final <-predict(tune_tree, test_str)
+ sqrt(mean((test_str$median_house_value - predict_tree_final)^2))
+ # [1] 51,070</pre>
+
+						<p>Support vector machine regressor:</p>
+
+						<pre class="prettyprint lang-r"> predict_svm_final <- predict(tune_svm, test_str)
+ sqrt(mean((test_str$median_house_value - predict_svm_final)^2))
+ # [1] 51,061 </pre>
+
+						<p>So with an entirely new dataset, Decision Tree and SVM Regression still achieves RMSE of 51,070 and 51,061, not very far from our residual errors. This is good result in the sense that our model is robust enough for future projection.</p>
+
+						<p>Congratulations, you have completed the technical part of a challenging Machine Learning/Data Mining project. You are now ready to present your solutions to your clients (what you have learned, what works, what kind of assumption was made, what the final results are). If you are lucky and your models (or your presentational skills) were impressive and gets a thumps up, then you will start to think about scaling your solution for production. Now this is where the real fun begins, but until next time !!!</p>			
+    			</div>
+    		</div>
+
+			<!-- Footer, contact form and details -->
+			<footer class = "w3-padding-64 w3-light-gray w3-small w3-center" id="footer">
+				<div class = "w3-row-padding">
+					<div class = "w3-col s4">
+						<h4>Contact Form</h4>
+						<p>Got some ideas or cool projects?</p>
+						<!-- Need to see how to work out this-->
+						<form action = "/action_page.php" target="blank">
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Name" name="Name" required>
+							</p>
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Email" name="Email" required>
+							</p>
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Subject" name="Subject" required>
+							</p>
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Message" name="Message" required>
+							</p>
+							<button type = "submit" class ="w3-button w3-block w3-black">Send</button>	
+						</form>
+					</div>
+
+					<!-- Social media-->
+					<div class = "w3-right w3-col s4 w3-justify">
+						<h4>Contact</h4>
+						<p>
+							<i class="fa fa-fw fa-map-marker"></i> Yale University, New Haven
+						</p>
+						<p>
+							<i class= "fa fa-fw fa-phone"></i> (203)-435-6710
+						</p>
+						<p>
+							<i class="fa fa-fw fa-envelope"></i> tuandoan.nguyen@yale.edu
+						</p>
+						<a class="fa fa-facebook-official w3-hover-opacity w3-large" href = "https://www.facebook.com/tuan.doannguyen" style = "text-decoration:none"></a>
+						<a class="fa fa-linkedin w3-hover-opacity w3-large" href = "https://www.linkedin.com/in/tuan-nguyen-doan/" style = "text-decoration:none"></a>
+						<a class="fa fa-instagram w3-hover-opacity w3-large" href = "https://www.instagram.com/t.nguyen.1996/" style = "text-decoration:none"></a>
+						<a class="fa fa-github w3-hover-opacity w3-large" href = "https://github.com/tuangauss" style = "text-decoration:none"></a>
+					</div>		
+				</div>
+			</footer>
+		</div>
+	</body>
+	<script>
+	// Script to open and close sidebar
+	function w3_open(){
+		document.getElementById("mySideBar").style.display = "block";
+		document.getElementById("myOverlay").style.display = "block";
+	}
+
+	function w3_close(){
+		document.getElementById("mySideBar").style.display = "none";
+		document.getElementById("myOverlay").style.display = "none";		
+	}
+	</script>
+</html>

@@ -10,6 +10,18 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
 		<script src="https://raw.githubusercontent.com/jrnold/prettify-lang-r-bugs/master/lang-r.js"></script>
+		<script>
+		// Script to open and close sidebar
+		function w3_open(){
+			document.getElementById("mySideBar").style.display = "block";
+			document.getElementById("myOverlay").style.display = "block";
+		}
+
+		function w3_close(){
+			document.getElementById("mySideBar").style.display = "none";
+			document.getElementById("myOverlay").style.display = "none";		
+		}
+		</script>
 		<style>
 		.w3-sidebar a {font-family: "Roboto", sans-serif}
 		body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
@@ -90,8 +102,92 @@
  #[1] 20640    10
  summary(cal_housing$total_bedrooms)
  #Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
- #1.0   296.0   435.0   537.9   647.0  6445.0     207</pre>
+ #1.0   296.0   435.0   537.9   647.0  6445.0     207
+ 
+ head(cal_housing)</pre>
 
+
+
+					<table class="w3-table w3-bordered w3-striped w3-border test w3-hoverable">
+						<tbody><tr class="w3-blue">
+					  		<th>longitude</th>
+					  		<th>latitude</th>
+					  		<th>housing_median_age</th>
+					  		<th>total_rooms</th>
+					  		<th>total_bedrooms</th>
+						</tr></tbody>
+						<tbody>
+							<tr>
+					  			<td>-122.23</td>
+					  			<td>37.88</td>
+					  			<td>41</td>
+					  			<td>880</td>
+					  			<td>129</td>
+							</tr>
+							<tr>
+					  			<td>-122.22</td>
+					  			<td>37.86</td>
+					  			<td>21</td>
+					  			<td>7099</td>
+					  			<td>1106</td>
+							</tr>
+							<tr>
+					  			<td>-122.24</td>
+					  			<td>37.85</td>
+					  			<td>52</td>
+					  			<td>1467</td>
+					  			<td>190</td>
+							</tr>
+							<tr>
+					  			<td>-122.25</td>
+					  			<td>37.85</td>
+					  			<td>52</td>
+					  			<td>1274</td>
+					  			<td>235</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table class="w3-table w3-bordered w3-striped w3-border test w3-hoverable">
+						<tbody><tr class="w3-blue">
+					  		<th>population</th>
+					  		<th>households</th>
+					  		<th>median_income</th>
+					  		<th>median_house_value</th>
+					  		<th>ocean_proximity</th>
+						</tr></tbody>
+						<tbody>
+							<tr>
+					  			<td>322</td>
+					  			<td>126</td>
+					  			<td>8.3252</td>
+					  			<td>452600</td>
+					  			<td>NEAR BAY</td>
+							</tr>
+							<tr>
+					  			<td>2401</td>
+					  			<td>1138</td>
+					  			<td>8.3014</td>
+					  			<td>452600</td>
+					  			<td>NEAR BAY</td>
+							</tr>
+							<tr>
+					  			<td>496</td>
+					  			<td>177</td>
+					  			<td>7.2594</td>
+					  			<td>352100</td>
+					  			<td>NEAR BAY</td>
+							</tr>
+							<tr>
+					  			<td>558</td>
+					  			<td>219</td>
+					  			<td>5.6431</td>
+					  			<td>341300</td>
+					  			<td>NEAR BAY</td>
+							</tr>
+						</tbody>
+					</table>
+					<p class = "w3-center" style = "margin-bottom: 15px"><em>Snapshot of the dataset using head() function</em></p>
 					<p>There are 20,640 entries in our dataset. This sounds a lot but is still pretty small for Machine Learning and especially Deep Learning standard. Notably, the total bed_rooms only have 20,433 entries with 207 missing entries. Dealing effectively with missing entries will be discussed later.</p>
 
 					<p>All variables are numerical, except for '''ocean_proximity''', which is a factor. In R, factors are categorical variables that acts like dummy variable codes. We see that '''ocean_proximty''' is a factor with 5 levels. Namely:</p>
@@ -109,7 +205,7 @@
 				<p>You can also plot the data to have a good feel of what each attributes look like. For example, we can see than slightly over 800 districts have a median_house_value equal to about $500,000.</p>
 
 				<p>More importantly, I hope you have recognizes some of the more important findings such as these:</p>
-				<ul ul style = "line-height: 2em" type = "circle">
+				<ul style = "line-height: 2em" type = "circle">
 					<li>Median income variable does not seem in US dollars. This is the good time to go back to the documentation of the dataset, and learn that this variable has been scaled and capped at 15.0001 for higher median incomes and 0.4999 for lower median incomes.</li>
 					<li>Housing median age and median house value are also capped. The later is more serious since it will be our dependent variable. Whatever Machine learning algorithms we come up with may learn that prices never go beyond that limit. This is a good time to contact your clients and see if this is a problem or not. If it is, there are two ways to go about it:
 						<ol type = "a">
@@ -176,6 +272,7 @@
 						</tr>
 					</tbody>
 				</table>
+			<p class = "w3-center" style = "margin-bottom: 15px"><em>Correlation of median_house_value against all other variables</em></p>
 			<p>The correlation ranges from -1 to 1. When it is close to 1, it means that there is a strong positive correlation. When it is close to -1, there is a strong negative correlation. 0 means no linear correlation.</p>
 
 			<p>We can see that there is a strong correlation between median house value and median income. Is it a coincidence that the houses of higher value usually belongs to those of higher income? Maybe.</p>
@@ -207,7 +304,7 @@
 					</div>
 
 					<!-- Social media-->
-					<div class = "w3-right w3-col s4 w3-justify">
+					<div class = "w3-right w3-col s4 w3-justify" >
 						<h4>Contact</h4>
 						<p>
 							<i class="fa fa-fw fa-map-marker"></i> Yale University, New Haven
@@ -227,16 +324,4 @@
 			</footer>
 		</div>
 	</body>
-	<script>
-	// Script to open and close sidebar
-	function w3_open(){
-		document.getElementById("mySideBar").style.display = "block";
-		document.getElementById("myOverlay").style.display = "block";
-	}
-
-	function w3_close(){
-		document.getElementById("mySideBar").style.display = "none";
-		document.getElementById("myOverlay").style.display = "none";		
-	}
-	</script>
 </html>

@@ -201,7 +201,7 @@
 					<pre class="prettyprint lang-r"> cal_housing_num <- subset(cal_housing, select = -c(ocean_proximity))
  par(mfrow= c(3,3))
  invisible(lapply(names(cal_housing_num), function(col_name) truehist(cal_housing_num[,col_name], main = paste("Histogram of ", col_name), xlab = NA)))</pre>	
- 				<img src="https://github.com/tuangauss/tuangauss.github.io/blob/master/full_data_science_project/img/all_plot.png?raw=true" alt="all_plot" style="width:100%">
+ 				<img src="https://raw.githubusercontent.com/tuangauss/tuangauss.github.io/master/full_data_science_project/img/all_plot.png?token=AU_DJwio1dyL0g4GSEOXzn7_WWxwZaPcks5aVrxIwA%3D%3D" alt="all_plot" style="width:100%">
  				<p class = "w3-center" style = "margin-bottom: 15px"><em>Snapshot of the dataset using head() function</em></p>
 
 				<p>You can also plot the data to have a good feel of what each attributes look like. For example, we can see than slightly over 800 districts have a median_house_value equal to about $500,000.</p>
@@ -228,6 +228,7 @@
 				<p>In the above plot, we have the radius of each circle represents the geographical unit's population and the color represents the house price. I hope you can see the California-like shape out of all the dots. The plot tells us that there must be a strong coorelation between housing prices and location or population density. Quite interestingly, the ocean_proximity variable may be useful but Northearn California coastal houses seem more affordable than SoCal. This means that the rules are not straightforward and it is up to the Machine Learning to detect these hidden pattern.</p>
 
 				<p>Another technique we could use is to compute the standard correlation coefficient between our target variable (median_house_price) and other variabels. In a nutshell, standard correlation coefficient measures the strength and relationship between 2 variables. By pitching all other variables against median_house_price, we can see which variables are strongly correlated to our target variables, thus, be useful for our prediction. 	</p>
+
 
 				<pre class="prettyprint lang-r"> cor(subset(cal_housing, select = -c(ocean_proximity)), use = "pairwise.complete.obs")[,"median_house_value"]</pre>
 
@@ -279,6 +280,8 @@
 			<p>The correlation ranges from -1 to 1. When it is close to 1, it means that there is a strong positive correlation. When it is close to -1, there is a strong negative correlation. 0 means no linear correlation.</p>
 
 			<p>We can see that there is a strong correlation between median house value and median income. Is it a coincidence that the houses of higher value usually belongs to those of higher income? Maybe.</p>
+
+			<p>Now that we have gained some insights about the dataset (the distribution of income, correlations between variables, etc.), maybe it's the time for us to start thinking about applying models to our dataset? Not yet. Remember that our dataset is still relatively messy, with missing values (total_bedrooms), categorical variables, etc.. This brings us to the next step, Data Cleaning (Data Wrangling) which usually takes up 70-80% of the time people spend on each data science project. The second part of the series will show you how to approach this step methodologically and effective. Click here for <a href="full_data_science_project/full_data_science_project_with_R(part_2).html" style = "text-decoration:none; font-weight: bold">part 2 </a>of the series.</p>
     			</div>
     		</div>
 

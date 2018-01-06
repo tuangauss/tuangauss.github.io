@@ -133,9 +133,8 @@ MathJax.Hub.Config({
 				<p> Finally, it only remains to say what we are assuming about the variance/precision. In particular, we are assuming the unknown variance does not depend on \(x\); this assumption is called <strong>homoscedasticity</strong>.
                 
                 <p> That's a lot, but you can visualize what I have discussed with this photo </p>
-                <div class = "w3-container w3-center"><img src="http://clipart-library.com/data_images/187613.gif" alt="linear_model" style="width:60%" class = "w3-center"></div>
- 				<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>Image source: Joseph Change's Yale S&DS 238 course. In an actual data analysis problem, all we are given is the black dots—the data. Using the data, our goal is to make inferences about the things we don’t know including \(\beta_0\) and \(\beta_1\) (which determine the shadowy, mysterious, blue dotted line) and \(\sigma\) (which determines the width of the red Normal densities from which the \(y\) data values are drawn).
-</em></p>
+                <div class = "w3-container w3-center"><img src="https://raw.githubusercontent.com/tuangauss/tuangauss.github.io/master/skinny_asian_guy/img/linear_model.PNG?token=AU_DJxE_EGNLfz5d3LzJvKnMHfp1nDhYks5aWpAQwA%3D%3D" alt="linear_model" style="width:60%" class = "w3-center"></div>
+ 				<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>In an actual data analysis problem, all we are given is the black dots—the data. Using the data, our goal is to make inferences about the things we don’t know including \(\beta_0\) and \(\beta_1\) (which determine the shadowy, mysterious, blue dotted line) and \(\sigma\) (which determines the width of the red Normal densities from which the \(y\) data values are drawn).</em>Image source: Joseph Change's Yale S&DS 238 course.</p>
 				<h3> Estimating parameters </h3>
                 <p>Now, there are a couple of ways you can do to estimate \(\beta_0\) and \(\beta_1\).If you estimate such model using <strong>ordinary least squares</strong>, you do not have to bother about the probabilistic formulation, because you are searching for optimal values of \(\beta_0\) and \(\beta_1\) by minimizing the squared errors of fitted values to predicted values. On another hand, you could estimate such model using <strong>maximum likelihood estimation</strong>, where you would be looking for optimal values of parameters by maximizing the likelihood function</p>
 				$$\mathop{\arg\,\max}\limits_{\beta_0, \beta_1, \tau} = \prod_{i=1}^{n} N(y_i;\beta_0 + \beta_1x_i, \tau) $$
@@ -158,7 +157,7 @@ MathJax.Hub.Config({
                 <p>Similarly, for the precision \(\tau\), we know these must be nonnegative so it makes sense to choose a distribution restricted to nonnegative values if we happen to know a convenient one – for example, we could use an Gamma distribution with low shape and scale paraeter. </p>
                 <p>If you choose a uniform distribution for \(\sigma\) or \(\tau\), you may end up with a model that is illustrated by John K. Kruschke</p>
                 <div class = "w3-container w3-center"><img src="https://raw.githubusercontent.com/tuangauss/tuangauss.github.io/master/skinny_asian_guy/img/john_model.jpg?token=AU_DJysofiA_ozS52eoIjWIhByIH5UiSks5aWo4twA%3D%3D" alt="regression_theory" style="width:60%" class = "w3-center"></div>
- 				<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>John K. Kruschke's illustrated model. Image source: Indiana University.</em></p>
+ 				<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>John K. Kruschke's illustrated model.</em> Image source: Indiana University.</p>
                 
                 <h3> JAGS </h3>
                 <p>So far so good for the theory. The problem is very rarely does solving <a href = "#equation_2" style = "text-decoration:none">equation (2)</a> is mathematically simple. In vast majority of cases posterior distribution will not be directly available (see how complicated Normal and Gamma distribution is and you have to MULTIPLY them together) and you will have to use Markov Chain Monte Carlo methods for estimating the model. JAGS helps us does exactly that.</p>
@@ -228,7 +227,7 @@ MathJax.Hub.Config({
                  <pre class="prettyprint lang-r"> m_perc <- pnorm(q = m_weight, mean = cmean, sd = sample_data$sig) 
  truehist(m_perc)  </pre>
 
-                <div class = "w3-container w3-center"> <img src="http://clipart-library.com/data_images/187613.gif" alt="regression_theory" style="width:60%" class = "w3-center"></div>
+                <div class = "w3-container w3-center"> <img src="https://raw.githubusercontent.com/tuangauss/tuangauss.github.io/master/skinny_asian_guy/img/post_weight.png?token=AU_DJ0P0GPsz6WHi6R0YlrA8_HUdTrZEks5aWo90wA%3D%3D" alt="post_percentile" style="width:80%" class = "w3-center"></div>
  				<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>Oophs!!! I will not even be in the range.</em></p>
                 <p> For example, we can find the percentile that my weight is in the first 40 percentile or less</p>
                 <pre class="prettyprint lang-r"> mean(m_perc <= 0.4)
@@ -236,7 +235,7 @@ MathJax.Hub.Config({
 			    <p> So there is overwhelming evidence that conditional on my height of 168cm, my weight 58kg would leave me at the lower percentile of the Vietnamese population. Much as I hesitate to admit, I am indeed very skinny for somebody of 168cm in height. It's really about time to hit the gym and gain some weights. After all, if you cannot trust some well done Bayesian statistics result, what else can you trust?</p>
                 <hr>
                 <p> Update: After 2 months in the gym, I did gain some weight which lands me at the 70-percentile of the sampled weight distribution? Could you calculate how much I weight now?</p>
-                <p id = "data_source" style = "font-size: 14px"><em>Data Source: Vuong Q. H.. Open Science Framework. 2017 https://doi.org/10.17605/OSF.IO/AFZ2W</em></p>
+                <p id = "data_source" style = "font-size: 18px"><em>Data Source: Vuong Q. H.. Open Science Framework. 2017 https://doi.org/10.17605/OSF.IO/AFZ2W</em></p>
     			</div>
     		</div>
 

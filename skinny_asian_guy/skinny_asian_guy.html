@@ -96,20 +96,20 @@ MathJax.Hub.Config({
 
       				<p>At first, let's plot the data's weight and see how I would fit in among the young Vietnamese men.</p>
 
-      				<div class = "w3-container w3-center"><img src="https://raw.githubusercontent.com/tuangauss/tuangauss.github.io/master/skinny_asian_guy/img/weight_density.png?token=AU_DJ-FHin-4eDJXUTFTVuL9l13uNsoJks5aWokywA%3D%3D" alt="weight_density" style="width:80%" class = "w3-center">
+      				<div class = "w3-container w3-center"><img src="/img/weight_density.png" alt="weight_density" style="width:80%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>The red line shows the median of the sample while the orange line shows the mean</em></p></div>
 
       				<p>This seems fine, which suggests that I am slightly below both the average and median weights of those 383 Vietnamese young men. However, the question is not about how my weight compares to such sample size per se, but <em><strong>given the height of 1m68</strong></em> what can we infer about my weight compared to the <strong>entire Vietnamese population</strong>, which is assumed to be represented by our sample? To do this, we need to dive into a regression analysis.</p>
 
       				<p> At first, let's plot a 2-dimensional scatter plot of heights and weights</p>
                     
-                    <div class = "w3-container w3-center"><img src="https://raw.githubusercontent.com/tuangauss/tuangauss.github.io/master/skinny_asian_guy/img/weight_vs_height.png?token=AU_DJz_vsaLr9yPruqnTFpbIURqV84KCks5aWomFwA%3D%3D" alt="weightvsheight" style="width:80%" class = "w3-center"></div>
+                    <div class = "w3-container w3-center"><img src="/img/weight_vs_height.png" alt="weightvsheight" style="width:80%" class = "w3-center"></div>
  					
  					<p>I just look average. More importantly, it does seem that there is overwhelmingly strong evidence to suggest a positive linear relationship between the height and weight of Vietnamese male. We will do a quantitative analysis to get to the bottom of this relationship.</p>
 
 <p>First, let's quickly add a "standard least square" line. I will say more about this line later and just show it for now. </p>
 
-					<div class = "w3-container w3-center"><img src="https://raw.githubusercontent.com/tuangauss/tuangauss.github.io/master/skinny_asian_guy/img/regression_line.png?token=AU_DJ_So4jkiC1k9hOUDKjiws2Tcb_OLks5aWompwA%3D%3D" alt="line_regress" style="width:80%"></div>
+					<div class = "w3-container w3-center"><img src="/img/regression_line.png" alt="line_regress" style="width:80%"></div>
 					<p>We could interpret our least-squares line \(y = -86.32+0.889x\) as suggesting that the usual profile of a Vietnamese male at my age is such that an increase in 1 cm of height would observe an increase in weight of 0.88kg.</p>
 
                     <p>However, this does not answer our question; that is, given somebody of my height (1m68), is 58kg considered too much, too little or just about average? To rephrase this question in a more quantitative manner, if we have a distribution of all of those who are 1m68 in height, what is the chance of my weight falls into the 25,50 or 75-percentile? To do this, let's dig deeper into Regression.</p>
@@ -133,7 +133,7 @@ MathJax.Hub.Config({
 				<p> Finally, it only remains to say what we are assuming about the variance/precision. In particular, we are assuming the unknown variance does not depend on \(x\); this assumption is called <strong>homoscedasticity</strong>.
                 
                 <p> That's a lot, but you can visualize what I have discussed with this photo </p>
-                <div class = "w3-container w3-center"><img src="https://raw.githubusercontent.com/tuangauss/tuangauss.github.io/master/skinny_asian_guy/img/linear_model.PNG?token=AU_DJxE_EGNLfz5d3LzJvKnMHfp1nDhYks5aWpAQwA%3D%3D" alt="linear_model" style="width:60%" class = "w3-center"></div>
+                <div class = "w3-container w3-center"><img src="/img/linear_model.PNG" alt="linear_model" style="width:60%" class = "w3-center"></div>
  				<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>In an actual data analysis problem, all we are given is the black dots—the data. Using the data, our goal is to make inferences about the things we don’t know including \(\beta_0\) and \(\beta_1\) (which determine the shadowy, mysterious, blue dotted line) and \(\sigma\) (which determines the width of the red Normal densities from which the \(y\) data values are drawn).</em>Image source: Joseph Change's Yale S&DS 238 course.</p>
 				<h3> Estimating parameters </h3>
                 <p>Now, there are a couple of ways you can do to estimate \(\beta_0\) and \(\beta_1\).If you estimate such model using <strong>ordinary least squares</strong>, you do not have to bother about the probabilistic formulation, because you are searching for optimal values of \(\beta_0\) and \(\beta_1\) by minimizing the squared errors of fitted values to predicted values. On another hand, you could estimate such model using <strong>maximum likelihood estimation</strong>, where you would be looking for optimal values of parameters by maximizing the likelihood function</p>
@@ -156,7 +156,7 @@ MathJax.Hub.Config({
                 <p>"What distributions?" is a different question, since there is unlimited number of choices. We could just choose a Normal prior with a large standard deviation (small precision); for example, we could assume \(\beta_0\) and \(\beta_1\) come from a Normal distribution with mean 0 and SD 10,000 (precision = \(1 \times 10^{-5}\)) or whatever. We can be rather cavalier about this and not worry about which distribution among spread-out distributions might be better or worse because they are all nearly flat in the region where the likelihood is non-negligible, and the posterior distribution doesn’t care what the prior distribution looks like in regions where the likelihood is negligible.</p>
                 <p>Similarly, for the precision \(\tau\), we know these must be nonnegative so it makes sense to choose a distribution restricted to nonnegative values if we happen to know a convenient one – for example, we could use an Gamma distribution with low shape and scale paraeter. </p>
                 <p>If you choose a uniform distribution for \(\sigma\) or \(\tau\), you may end up with a model that is illustrated by John K. Kruschke</p>
-                <div class = "w3-container w3-center"><img src="https://raw.githubusercontent.com/tuangauss/tuangauss.github.io/master/skinny_asian_guy/img/john_model.jpg?token=AU_DJysofiA_ozS52eoIjWIhByIH5UiSks5aWo4twA%3D%3D" alt="regression_theory" style="width:60%" class = "w3-center"></div>
+                <div class = "w3-container w3-center"><img src="/img/john_model.jpg" alt="regression_theory" style="width:60%" class = "w3-center"></div>
  				<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>John K. Kruschke's illustrated model.</em> Image source: Indiana University.</p>
                 
                 <h3> JAGS </h3>
@@ -227,7 +227,7 @@ MathJax.Hub.Config({
                  <pre class="prettyprint lang-r"> m_perc <- pnorm(q = m_weight, mean = cmean, sd = sample_data$sig) 
  truehist(m_perc)  </pre>
 
-                <div class = "w3-container w3-center"> <img src="https://raw.githubusercontent.com/tuangauss/tuangauss.github.io/master/skinny_asian_guy/img/post_weight.png?token=AU_DJ0P0GPsz6WHi6R0YlrA8_HUdTrZEks5aWo90wA%3D%3D" alt="post_percentile" style="width:80%" class = "w3-center"></div>
+                <div class = "w3-container w3-center"> <img src="/img/post_weight.png" alt="post_percentile" style="width:80%" class = "w3-center"></div>
  				<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>Oophs!!! I will not even be in the range.</em></p>
                 <p> For example, we can find the percentile that my weight is in the first 40 percentile or less</p>
                 <pre class="prettyprint lang-r"> mean(m_perc <= 0.4)

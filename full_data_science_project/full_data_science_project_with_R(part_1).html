@@ -201,7 +201,7 @@
 					<pre class="prettyprint lang-r"> cal_housing_num <- subset(cal_housing, select = -c(ocean_proximity))
  par(mfrow= c(3,3))
  invisible(lapply(names(cal_housing_num), function(col_name) truehist(cal_housing_num[,col_name], main = paste("Histogram of ", col_name), xlab = NA)))</pre>	
- 				<img src="https://raw.githubusercontent.com/tuangauss/tuangauss.github.io/master/full_data_science_project/img/all_plot.png?token=AU_DJwio1dyL0g4GSEOXzn7_WWxwZaPcks5aVrxIwA%3D%3D" alt="all_plot" style="width:100%">
+ 				<img src="/img/all_plot.png" alt="all_plot" style="width:100%">
  				<p class = "w3-center" style = "margin-bottom: 15px"><em>Snapshot of the dataset using head() function</em></p>
 
 				<p>You can also plot the data to have a good feel of what each attributes look like. For example, we can see than slightly over 800 districts have a median_house_value equal to about $500,000.</p>
@@ -223,7 +223,7 @@
 
 				<pre class="prettyprint lang-r"> g <- ggplot(cal_housing, aes(x = longitude, y = latitude, colour = median_income))
  g+geom_point()+scale_color_distiller(palette = "Spectral")</pre>
- 				<img src="https://raw.githubusercontent.com/tuangauss/tuangauss.github.io/master/full_data_science_project/img/location_plot.png?token=AU_DJ201PVMiDZ6vX2gc58uTnsWENjduks5aVrrAwA%3D%3D" alt="location_plot" style="width:100%">
+ 				<img src="/img/location_plot.png" alt="location_plot" style="width:100%">
 
 				<p>In the above plot, we have the radius of each circle represents the geographical unit's population and the color represents the house price. I hope you can see the California-like shape out of all the dots. The plot tells us that there must be a strong coorelation between housing prices and location or population density. Quite interestingly, the ocean_proximity variable may be useful but Northearn California coastal houses seem more affordable than SoCal. This means that the rules are not straightforward and it is up to the Machine Learning to detect these hidden pattern.</p>
 

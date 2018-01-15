@@ -9,7 +9,6 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
-		<script type="text/javascript" src="syntaxhighlighter.js"></script>
 		<script src="https://raw.githubusercontent.com/jrnold/prettify-lang-r-bugs/master/lang-r.js"></script>
         <script type="text/javascript" async
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
@@ -167,7 +166,7 @@ MathJax.Hub.Config({
                 
                 <p> We run JAGs in R as follows </p>
                 <p> - At first, we write our model in text format:</p>
-                <pre class="brush: py"> mymodel <- "
+                <pre class="prettyprint lang-r"> mymodel <- "
  model{
   for(i in 1:n){
     y[i] ~ dnorm(a + b*x[i], tau)

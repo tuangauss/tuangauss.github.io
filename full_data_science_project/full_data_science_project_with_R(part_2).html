@@ -8,8 +8,14 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-		<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
-		<script src="https://raw.githubusercontent.com/jrnold/prettify-lang-r-bugs/master/lang-r.js"></script>
+		<!-- change language is possible -->
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/r.min.js"></script>
+		<!-- Change style by replacing "github" with "default" or anything else"-->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script>hljs.initLineNumbersOnLoad();</script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.1.0/highlightjs-line-numbers.min.js"></script>		
 		<script>
 		// Script to open and close sidebar
 			function w3_open(){
@@ -24,15 +30,33 @@
 		</script>
 		<style>
 		.w3-sidebar a {font-family: "Roboto", sans-serif}
+
 		body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
+
         p, li{
         font-family: Open Sans;
         font-size: 18px;
         }
 
-        pre {
-		/* use this to wrap around code*/
-		white-space: pre-wrap;
+		td.hljs-ln-numbers {
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+
+			text-align: center;
+			color: #ccc;
+			border-right: 1px solid #CCC;
+			vertical-align: top;
+			padding-right: 5px;
+			/* your custom style here */
+		}
+
+		/* for block of code */
+		td.hljs-ln-code {
+			padding-left: 10px;
 		}
 		</style>
 	</head>
@@ -103,22 +127,22 @@
 					<h4 class = "w3-text-teal">a. Dealing with misisng data</h4>
 
 					<p>There are several ways we can deal with missing data, we can either: </p>
-					<pre class="prettyprint lang-r"> # Method 1: delete the column
- cal_housing <- subset(cal_housing, select = -c(total_bedroom)) </pre>
+					<pre><code class="r"> # Method 1: delete the column
+ cal_housing <- subset(cal_housing, select = -c(total_bedroom)) </code></pre>
 
 					<p>or:</p>
-					<pre class="prettyprint lang-r"> # Method 2: remove the missing NA
+					<pre><code class="r"> # Method 2: remove the missing NA
  cal_housing_1 <- cal_housing[complete.cases(cal_housing),]
  dim (cal_housing_1)
  # [1] 20433    10
- # we see that 207 rows with misssing values have been removed</pre>
+ # we see that 207 rows with misssing values have been removed</code></pre>
 
 					<p>or:</p>
-					<pre class="prettyprint lang-r"> # Method 3: impute missing NAs with median
+					<pre><code class="r"> # Method 3: impute missing NAs with median
  cal_housing$total_bedrooms[is.na(cal_housing$total_bedrooms)] <- median(cal_housing$total_bedrooms, na.rm=TRUE)
  summary(cal_housing$total_bedrooms)
  #Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
- # 1.0   297.0   435.0   536.8   643.2  6445.0 </pre>
+ # 1.0   297.0   435.0   536.8   643.2  6445.0 </code></pre>
 
  					<p>In option 3, we can see that I compute the median value on the dataset and impute the missing value of by this median. You can also use other value to impute the missing values, e.g: mean, but usually median is chosen as a good representation of the variables. The nice thing about this option is that you do not have to remove any data entries, which could be valuable in a small dataset. Let's stick with this method in this project</p>
 					
@@ -132,14 +156,14 @@
 						<li>Scaled all numerical variables using standardization techniques as explained</li>
 					</ul>
 
-					<pre class="prettyprint lang-r"> library(dplyr)
+					<pre><code class="r"> library(dplyr)
  cal_housing <- cal_housing %>%
 	  filter(median_house_value < 500000) %>%
 	  mutate(rooms_per_house = total_rooms / households) %>%
 	  mutate(population_per_house = population / households) %>%
 	  mutate(ocean_proximity = as.factor(ocean_proximity)) %>%
 	  mutate_at(vars(-ocean_proximity, -median_house_value, -median_income), funs(scale)) %>%
-	  data.matrix %>% data.frame </pre>
+	  data.matrix %>% data.frame </code></pre>
 
 					<h4 class = "w3-text-teal">c. Split to training set and test set:</h4>
 
@@ -147,33 +171,33 @@
 
 					<p>Creating test set is very simple: just pick some instances randomly, usually 20% of the dataset (Ok, 10% is fine) and set them aside: </p>
 
-					<pre class="prettyprint lang-r"> set.seed(365)
+					<pre><code class="r"> set.seed(365)
  train_id <- sample(nrow(cal_housing), size = 0.8*nrow(cal_housing))
  train_set <- cal_housing[train_id,]
  test_set <- cal_housing[-train_id,]
  print (paste(nrow(train_set), "train +", nrow(test_set), "test"))
- # [1] "15718 train + 3930 test" </pre>
+ # [1] "15718 train + 3930 test" </code></pre>
 
 					<p>This purely random sampling method is generally fine if we have a large dataset, but if it is not, you run the risk of introducing significant sampling bias. You can read more about it here. In short, it is the phenomenon when the sample is not represetative of the actual population. We want to guarantee that the test set is representative of the population. This is called <strong>stratified sampling</strong>.</p>
 					<img src="./img/strata-sample.gif" style="width:60%">
  					<p class = "w3-center" style = "margin-bottom: 15px"><em>Plots of median income as a continous and categorical variable. Image source: Elgin Community College</em></p>
 					<p>What does it mean for our dataset? Let's say that we think median income is a very important attribute to predict median housing prices. We want to ensure that the test set is representatiuve of the various categories of incomes in the whole dataset (that mean, we should have the same representation of the 0.1%, 1%, 10% richest - Ok, we are not going into that much details though). Since our median income is continuous variable, we have to convert them into categorical variables of different levels (I choose 5 levels of income) and perform stratified sampling to create the test set. This can be easily done with the <strong>caret package</strong> in R.</p>
 
-					<pre class="prettyprint lang-r"> #Convert median income into categorical variables with 5 levels
+					<pre><code class="r"> #Convert median income into categorical variables with 5 levels
  cal_housing <- cal_housing %>% 
 	 mutate(income_level = ceiling(median_income/2)) %>%
 	 mutate(income_level = factor(ifelse(income_level >= 5, 5, income_level))) %>%
 		 select(-median_income)
-plot(cal_housing$income_level)	</pre>
+plot(cal_housing$income_level)	</code></pre>
  				<img src="./img/2plots.png" alt="2_plot" style="width:80%">
  				<p class = "w3-center" style = "margin-bottom: 15px"><em>Plots of median income as a continous and categorical variable</em></p>
 
-					<pre class="prettyprint lang-r"> #Stratified Sampling
+					<pre><code class="r"> #Stratified Sampling
  library (caret)						
  train_str_id <- createDataPartition(cal_housing$income_level, p =.8,
                                     list = FALSE, times = 1)
  train_str <- cal_housing[train_str_id,]
- test_str <- cal_housing[-train_str_id,]</pre>
+ test_str <- cal_housing[-train_str_id,]</code></pre>
 
  					<p> We can compare the performance of stratified sampling and random sampling by seeing how well each method represents the distribution of income level in the overall data set ('overall' column):</p>
 

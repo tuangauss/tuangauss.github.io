@@ -8,8 +8,14 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-		<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
-		<script src="https://raw.githubusercontent.com/jrnold/prettify-lang-r-bugs/master/lang-r.js"></script>
+		<!-- change language is possible -->
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/r.min.js"></script>
+		<!-- Change style by replacing "github" with "default" or anything else"-->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.1.0/highlightjs-line-numbers.min.js"></script>
+		<script>hljs.initLineNumbersOnLoad();</script>
 		<script>
 		// Script to open and close sidebar
 		function w3_open(){
@@ -30,10 +36,27 @@
         font-size: 18px;
         }
 
-        pre {
-		/* use this to wrap around code*/
-		white-space: pre-wrap;
+		td.hljs-ln-numbers {
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+
+			text-align: center;
+			color: #ccc;
+			border-right: 1px solid #CCC;
+			vertical-align: top;
+			padding-right: 5px;
+			/* your custom style here */
 		}
+
+		/* for block of code */
+		td.hljs-ln-code {
+			padding-left: 10px;
+		}
+
 		</style>
 	</head>
 	<body class = "w3-content" style = "max-width:1200px" data-gr-c-s-loaded = "true">
@@ -81,10 +104,10 @@
       				<p>In this example, we will be using the 1990 California Housing Prices Dataset from the StatLib repository. This is obviously not the most recent data (guess how much the real estate market have boomed - and busted since then). You can easily find more recent or similary dataset (Boston Housing data being one of the more popular) from online repositories.</p>
       				<p>For starter, this dataset contains information such as population, median income, median housing price, total rooms for each geographical unit under the US Census Bureau (each unit typically has a population of 600 to 3,000 people).</p>
       					<!-- R requires extension source, as compared to python, see source-->
-                  	<pre class="prettyprint lang-r"> link <- "http://www.dcc.fc.up.pt/~ltorgo/Regression/cal_housing.tgz"
+                  	<pre><code class="r"> link <- "http://www.dcc.fc.up.pt/~ltorgo/Regression/cal_housing.tgz"
  download.file(link, destfile = "./cal_housing.tgz")
  untar("cal_housing.gz")
- cal_housing <- read.csv("~/CaliforniaHousing/cal_housing.data")</pre>
+ cal_housing <- read.csv("~/CaliforniaHousing/cal_housing.data")</code></pre>
 
   					<p>Note that in any data project, it's most vital to frame the problem before diving into the datasets. The first question to ask is what exactly the business objective is. For the purpose of this tutorial, let's say our objective is to build a model that predicts the median house price for each geographical units.	
   					</p>
@@ -98,13 +121,13 @@
 						<li>str()</li>
 						<li>summary()</li>
 					</ul>
-					<pre class="prettyprint lang-r"> dim(cal_housing)
+					<pre><code class="r"> dim(cal_housing)
  #[1] 20640    10
  summary(cal_housing$total_bedrooms)
  #Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
  #1.0   296.0   435.0   537.9   647.0  6445.0     207
  
- head(cal_housing)</pre>
+ head(cal_housing)</code></pre>
 
 
 
@@ -192,15 +215,15 @@
 
 					<p>All variables are numerical, except for '''ocean_proximity''', which is a factor. In R, factors are categorical variables that acts like dummy variable codes. We see that '''ocean_proximty''' is a factor with 5 levels. Namely:</p>
 
-					<pre class="prettyprint lang-r"> levels(cal_housing$ocean_proximity)
- #"1H OCEAN"  "INLAND"     "ISLAND"     "NEAR BAY"   "NEAR OCEAN"</pre>
+					<pre><code class="r"> levels(cal_housing$ocean_proximity)
+ #"1H OCEAN"  "INLAND"     "ISLAND"     "NEAR BAY"   "NEAR OCEAN"</code></pre>
 					<p>Internally, R stores the integer values 1, 2, and 3, 4, 5and maps the character strings (in alphabetical order, unless I reorder) to these values, i.e. 1=1H OCEAN, 2=INLAND, and 3=ISLAND, etc. More specifically, R automatically converts any categorical variables stored as factor into a series of dummy variables telling us whether an entries is a specific level (1) or not (0).</p>
 
 					<p>This is a particularly useful feature in R that makes building model a whole lot easier, as compared to Python's Scikitlearn where you have to do the encoding by hand.</p>
 
-					<pre class="prettyprint lang-r"> cal_housing_num <- subset(cal_housing, select = -c(ocean_proximity))
+					<pre><code class="r"> cal_housing_num <- subset(cal_housing, select = -c(ocean_proximity))
  par(mfrow= c(3,3))
- invisible(lapply(names(cal_housing_num), function(col_name) truehist(cal_housing_num[,col_name], main = paste("Histogram of ", col_name), xlab = NA)))</pre>	
+ invisible(lapply(names(cal_housing_num), function(col_name) truehist(cal_housing_num[,col_name], main = paste("Histogram of ", col_name), xlab = NA)))</code></pre>	
  				<img src="./img/all_plot.png" alt="all_plot" style="width:100%">
  				<p class = "w3-center" style = "margin-bottom: 15px"><em>Snapshot of the dataset using head() function</em></p>
 
@@ -221,8 +244,8 @@
 				<p>Visualizing data is an art. Drawing histogram as we have done earlier is one way to do it. Depending on your dataset, there can be many different ways to present our data in an insightful way. More often than not, a good representation of our dataset can uncover new insights and opens new channels for discovery and experimentation. In R, a very useful tools for data visualization is ggplot. There are plenty of ggplot tutorial online so I'm not going to deep in the actual syntax.</p>
 				<p>Back to our housing dataset, since we have geographical information such as latitude and longitude, it is usually a good idea to draw a scatter plot to visualize our data.</p>		
 
-				<pre class="prettyprint lang-r"> g <- ggplot(cal_housing, aes(x = longitude, y = latitude, colour = median_income))
- g+geom_point()+scale_color_distiller(palette = "Spectral")</pre>
+				<pre><code class="r"> g <- ggplot(cal_housing, aes(x = longitude, y = latitude, colour = median_income))
+ g+geom_point()+scale_color_distiller(palette = "Spectral")</code></pre>
  				<img src="./img/location_plot.png" alt="location_plot" style="width:100%">
 
 				<p>In the above plot, we have the radius of each circle represents the geographical unit's population and the color represents the house price. I hope you can see the California-like shape out of all the dots. The plot tells us that there must be a strong coorelation between housing prices and location or population density. Quite interestingly, the ocean_proximity variable may be useful but Northearn California coastal houses seem more affordable than SoCal. This means that the rules are not straightforward and it is up to the Machine Learning to detect these hidden pattern.</p>
@@ -230,7 +253,7 @@
 				<p>Another technique we could use is to compute the standard correlation coefficient between our target variable (median_house_price) and other variabels. In a nutshell, standard correlation coefficient measures the strength and relationship between 2 variables. By pitching all other variables against median_house_price, we can see which variables are strongly correlated to our target variables, thus, be useful for our prediction. 	</p>
 
 
-				<pre class="prettyprint lang-r"> cor(subset(cal_housing, select = -c(ocean_proximity)), use = "pairwise.complete.obs")[,"median_house_value"]</pre>
+				<pre><code class="r"> cor(subset(cal_housing, select = -c(ocean_proximity)), use = "pairwise.complete.obs")[,"median_house_value"]</code></pre>
 
 				<table class="w3-table w3-bordered w3-striped w3-border test w3-hoverable">
 					<tbody><tr class="w3-green">

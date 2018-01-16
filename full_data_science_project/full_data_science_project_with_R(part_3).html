@@ -8,8 +8,14 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-		<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
-		<script src="https://raw.githubusercontent.com/jrnold/prettify-lang-r-bugs/master/lang-r.js"></script>
+		<!-- change language is possible -->
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/r.min.js"></script>
+		<!-- Change style by replacing "github" with "default" or anything else"-->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script>hljs.initLineNumbersOnLoad();</script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.1.0/highlightjs-line-numbers.min.js"></script>	
 		<script>
 			// Script to open and close sidebar
 			function w3_open(){
@@ -24,15 +30,33 @@
 		</script>
 		<style>
 		.w3-sidebar a {font-family: "Roboto", sans-serif}
+
 		body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
+
         p, li{
         font-family: Open Sans;
         font-size: 18px;
         }
 
-        pre {
-		/* use this to wrap around code*/
-		white-space: pre-wrap;
+		td.hljs-ln-numbers {
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+
+			text-align: center;
+			color: #ccc;
+			border-right: 1px solid #CCC;
+			vertical-align: top;
+			padding-right: 5px;
+			/* your custom style here */
+		}
+
+		/* for block of code */
+		td.hljs-ln-code {
+			padding-left: 10px;
 		}
 		</style>
 	</head>
@@ -87,15 +111,15 @@
 
       				<p>Let's start with a fairly straightforward method: <strong>simple linear regression</strong>.</p>
 
-      				<pre class="prettyprint lang-r"> model_lm <- lm(median_house_value~., train_str)</pre>
+      				<pre><code class="r"> model_lm <- lm(median_house_value~., train_str)</code></pre>
 
       				<p> That looks simple. Let's see how our model performs when we apply on our training set and predict it again. A way to measure the perform of this regression task is to use a metric called <strong>Root-mean-square-error (RMSE)</strong>. It is a frequently used measure of the differences between values (sample and population values) predicted by a model or an estimator and the values actually observed. The <strong>RMSE</strong> represents the sample standard deviation of the differences between predicted values and observed values. These individual differences are called <em>residuals</em> when the calculations are performed over the data sample that was used for estimation, and are called <em>prediction errors</em> when computed out-of-sample.</p>
 
       				<p>We can calculate the RMSE metric as follows:</p>
 
-      				<pre class="prettyprint lang-r"> predict_lm_train <- predict(model_lm, train_str)
+      				<pre><code class="r"> predict_lm_train <- predict(model_lm, train_str)
  sqrt(mean((train_str$median_house_value - predict_lm_train)^2)) #square root of sum of differences
- # [1] 63464.64 </pre>
+ # [1] 63464.64 </code></pre>
 
  					<p>It works, but not amazingly. To put in context, a <strong>RMSE</strong> error of 63,464 means that on average, the prediction error is around $63,434. If we go back to our dataset and notice how the <em>median_housing_value</em> mostly ranges from $200,000 to $500,000, prediction error could account to up to 30% of the actual value. This is called <strong>underfitting</strong>, where the predictors does not provide enough information or the algorithm is not powerful enough (which is likely to be the case here). </p>
 
@@ -108,21 +132,21 @@
 
 					<p>For the purpose of this example, let us try different algorithms and see how it perform. I choose <strong>Decision Tree</strong> and <strong>Support Vector Machine Regression</strong>, both are very powerful and capable of detecting complex patterns in our dataset.</p>
 
-					<pre class="prettyprint lang-r"> # Decision tree model
+					<pre><code class="r"> # Decision tree model
  library(rpart)
  model_decision_tree <- rpart(median_house_value~.,data = train_str, method = "anova", control = rpart.control(minsplit = 2, cp=0.001))
  #make prediction						
  predict_decision_tree <- predict(model_decision_tree, train_str)
  #calculate RMSE error
  sqrt(mean((train_str$median_house_value - predict_decision_tree)^2))
- # [1] 53320.74 </pre>
+ # [1] 53320.74 </code></pre>
 
- 					<pre class="prettyprint lang-r"> # Support Vector Machine Regression model
+ 					<pre><code class="r"> # Support Vector Machine Regression model
  library(e1071)
  model_svm <- svm(median_house_value~.,data = train_str, cost = 10)
  predict_svm <- predict(model_svm, train_str)
  sqrt(mean((train_str$median_house_value - predict_svm)^2))
- # [1] 50,342</pre>
+ # [1] 50,342</code></pre>
  					<p>That looks good, using the Decision tree regression model and Support vector machine, we can reduce the internal residuals down to $53,320 and $50,342 respectively, significantly improving from the simple linear regression model in nominal value.</p><p>In fact, the two models perform well that we may run the risk of <strong>overfitting</strong> the data, which means that the algorithms learn so many features unique to the training set that it performs badly to new dataset.</p>
 
  					<p>How can we assess overfitting of a model, there are generally 2 methods:</p>
@@ -139,7 +163,7 @@
 					<img src="./img/k-fold.png" alt="k-fold" style="width:60%">
  					<p class = "w3-center" style = "margin-bottom: 15px"><em>K-fold cross-validation and how it works. Image source: Sebastian Raschka</em></p>
 					<p>Sounds straightforward enough, let's perform a 10-fold cross validation technique to objectively assess the power of our 3 algorithms:</p>
-					<pre class="prettyprint linenums lang-r"> # randomly shuffle your data	
+					<pre><code class="r"> # randomly shuffle your data	
  cal_housing_copy <- cal_housing[sample(nrow(cal_housing)),]
 
  #Create 10 equally size folds
@@ -179,7 +203,7 @@
  sqrt(MSE_tree)
  # [1] 55583.9
  sqrt(MSE_svm)
- # [1] 52585.5</pre>
+ # [1] 52585.5</code></pre>
  						<p>So our performace using this technique is generally good, although not as great as when we only use the training set to evaluate the model. The good news is: now we know that in general, <strong>Decision Tree</strong> and <strong>SVM Regression</strong> performs significantly better than a simple linear regression. Now it's time to take them to the next level and make them even better by fine-tuning some hyperparameters.</p>
 
 						<h3 class = "w3-text-teal">V. Fine tuning our model:</h3>
@@ -197,25 +221,25 @@
 
 						<p> First, we try a set of parameters for <strong>Decision tree model</strong>. I decided to search through 2 hyperparameters: <em>minsplit</em> (5 different values) and <em>cp</em> (5 different values). This makes a total of 25 iterations of training and we will get the model that performs the best out of these 25 iterations.</p>
 						
-						<pre class="prettyprint lang-r"> #applying grid search
+						<pre><code class="r"> #applying grid search
  tuneResult1 <- tune.rpart(median_house_value~., data = train_str, minsplit = c(5,10,15, 20), cp = c(0.1,0.01,0.001,0.0001))
  tune_tree <- tuneResult1$best.model #get the best model
 
  #find RMSE value of the best model
  predict_tree <- predict(tune_tree, train_str) 
  sqrt(mean((train_str$median_house_value - predict_tree)^2))
- # [1] 40,282</pre>
+ # [1] 40,282</code></pre>
 
  						<p> Let's try applying Grid search to <strong> SVM Regression</strong>. Here, I searched through 2 parameters: <em>cost</em> (4 different values) and <em>gamma</em> (3 different values), making a total of 12 iterations of training </p>
 
-						<pre class="prettyprint lang-r"> #applying grid search
+						<pre><code class="r"> #applying grid search
  tuneResult2 <- tune.svm(median_house_value ~., data = train_str, cost=10^(-1:2), gamma=c(0.1,0,1))
  tune_svm <- tuneResult2$best.model #get best model
 
  #find RMSE of the best model
  predict_svm <- predict (tune_svm, train_str)
  sqrt(mean((train_str$median_house_value - predict_svm)^2))
- # [1] 44,399</pre>
+ # [1] 44,399</code></pre>
 
 
 						<p>That's impressive, we managed to further reduce RMSE of Decision Tree and SVM Regression to 40,282 and 44,399 respectively by fine-tuning the hyperpameters. Notice that this is up to 20,000 or 30% improvement from our naive linear regression model.</p>
@@ -225,15 +249,15 @@
 						<p>Now that we have seen which models or parameter combinations perform the best, we can test them on the test set and see how well our models predict new data. There's nothing really fancy about this. Just repeat the prediction and calculation of RMSE, this time on the test set.</p>
 
 						<p>Decision tree regression model:</p>
-						<pre class="prettyprint lang-r"> predict_tree_final <-predict(tune_tree, test_str)
+						<pre><code class="r"> predict_tree_final <-predict(tune_tree, test_str)
  sqrt(mean((test_str$median_house_value - predict_tree_final)^2))
- # [1] 51,070</pre>
+ # [1] 51,070</code></pre>
 
 						<p>Support vector machine regressor:</p>
 
-						<pre class="prettyprint lang-r"> predict_svm_final <- predict(tune_svm, test_str)
+						<pre><code class="r"> predict_svm_final <- predict(tune_svm, test_str)
  sqrt(mean((test_str$median_house_value - predict_svm_final)^2))
- # [1] 51,061 </pre>
+ # [1] 51,061 </code></pre>
 
 						<p>So with an entirely new dataset, Decision Tree and SVM Regression still achieves RMSE of 51,070 and 51,061, not very far from our residual errors. This is good result in the sense that our model is robust enough for future projection.</p>
 

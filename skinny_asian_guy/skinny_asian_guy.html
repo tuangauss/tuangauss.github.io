@@ -7,17 +7,19 @@
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-		<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
-		<script src="https://raw.githubusercontent.com/jrnold/prettify-lang-r-bugs/master/lang-r.js"></script>
-        <script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
+		<!-- change language is possible -->
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/r.min.js"></script>
+		<!-- Change style by replacing "github" with "default" or anything else"-->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.1.0/highlightjs-line-numbers.min.js"></script>
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+		<script>hljs.initLineNumbersOnLoad();</script>
 		<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: { equationNumbers: { autoNumber: "AMS" } }
-});
-</script>
+			MathJax.Hub.Config({
+			  TeX: { equationNumbers: { autoNumber: "AMS" } }
+			}); </script>
 		<script>
 			// Script to open and close sidebar
 			function w3_open(){
@@ -30,17 +32,37 @@ MathJax.Hub.Config({
 				document.getElementById("myOverlay").style.display = "none";		
 			}
 		</script>
+
 		<style>
 		.w3-sidebar a {font-family: "Roboto", sans-serif}
+
 		body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
+
         p, li{
         font-family: Open Sans;
         font-size: 18px;
         }
 
-        pre {
-		/* use this to wrap around code*/
-		white-space: pre-wrap;
+		/* for block of numbers */
+		td.hljs-ln-numbers {
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+
+			text-align: center;
+			color: #ccc;
+			border-right: 1px solid #CCC;
+			vertical-align: top;
+			padding-right: 5px;
+			/* your custom style here */
+		}
+
+		/* for block of code */
+		td.hljs-ln-code {
+			padding-left: 10px;
 		}
 		</style>
 	</head>
@@ -166,7 +188,7 @@ MathJax.Hub.Config({
                 
                 <p> We run JAGs in R as follows </p>
                 <p> - At first, we write our model in text format:</p>
-                <pre class="prettyprint lang-r"> mymodel <- "
+                <pre><code class ="r"> mymodel <- "
  model{
   for(i in 1:n){
     y[i] ~ dnorm(a + b*x[i], tau)
@@ -174,13 +196,12 @@ MathJax.Hub.Config({
   a ~ dnorm(0, 1e-6)
   b ~ dnorm(0, 1e-6)
   tau ~ dgamma(.01,.01)
-}
-"</pre>
+  }"</code></pre>
 				<p> Then, we command JAGs to conduct the simulation. Here I ask JAGs to simulate the value for the parameter space \(\theta\) 10000 times.</p>
                 
-               	<pre class="prettyprint lang-r"> jm <- jags.model(file = textConnection(mymodel), data=list(n=n, x=data$height, y=data$weight))
+               	<pre><code class="r"> jm <- jags.model(file = textConnection(mymodel), data=list(n=n, x=data$height, y=data$weight))
  cs <- coda.samples(jm, c("a","b","tau"), 10000)
- sample_data <- as.data.frame(cs[[1]])</pre>
+ sample_data <- as.data.frame(cs[[1]])</code></pre>
  				
                 <p> After such sampling, we achieve the sampled data of \(\theta = (\beta_0; \beta_1; \tau)\) such as this</p>
 
@@ -222,16 +243,16 @@ MathJax.Hub.Config({
                     <p> Great, now we have 10,000 iterations of the parameter space \(\theta\), what do we do now? Remember that by <a href = "#equation_1" style = "text-decoration:none">equation (1)</a>:</p>
                     $$\mu = \beta_0 + \beta_1x$$
                  <p> This means that if we substitute \(x = 168cm\) to each of the iteration, we will find 10,000 values of weight and thus, the <em>distribution</em> of weights <strong>given that</strong> the height is 168cm.
-                 <pre class="prettyprint lang-r"> cmean <- sample_data$a + sample_data$b*168 </pre>
+                 <pre> <code class="r"> cmean <- sample_data$a + sample_data$b*168 </code></pre>
                  <p> We are interested in the percentile of my weight, conditional on my height. For any quantity that can be calculated as a function of the parameters we have monitored in the MCMC, we can get a sample from the posterior distribution for that quantity simply by taking that function of the parameters in our MCMC. We’ll do that for the desired percentile here.</p> 
-                 <pre class="prettyprint lang-r"> m_perc <- pnorm(q = m_weight, mean = cmean, sd = sample_data$sig) 
- truehist(m_perc)  </pre>
+                  <pre> <code class="r"> m_perc <- pnorm(q = m_weight, mean = cmean, sd = sample_data$sig) 
+ truehist(m_perc)  </code></pre>
 
                 <div class = "w3-container w3-center"> <img src="./img/post_weight.png" alt="post_percentile" style="width:80%" class = "w3-center"></div>
  				<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>Oophs!!! I will not even be in the range.</em></p>
                 <p> For example, we can find the percentile that my weight is in the first 40 percentile or less</p>
-                <pre class="prettyprint lang-r"> mean(m_perc <= 0.4)
- #  [1]  0.994  </pre>
+                 <pre> <code class="r"> mean(m_perc <= 0.4)
+ #  [1]  0.994  </code></pre>
 			    <p> So there is overwhelming evidence that conditional on my height of 168cm, my weight 58kg would leave me at the lower percentile of the Vietnamese population. Much as I hesitate to admit, I am indeed very skinny for somebody of 168cm in height. It's really about time to hit the gym and gain some weights. After all, if you cannot trust some well done Bayesian statistics result, what else can you trust?</p>
                 <hr>
                 <p> Update: After 2 months in the gym, I did gain some weight which lands me at the 70-percentile of the sampled weight distribution? Could you calculate how much I weight now?</p>

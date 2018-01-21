@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 		<!-- change language is possible -->
-		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/r.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
 		<!-- Change style by replacing "github" with "default" or anything else"-->
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
 		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
@@ -39,7 +39,7 @@
 		body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 
         p, li{
-        font-family: Helvetica, Arial, sans-serif;	
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif,
         font-size: 16px;
         }
 
@@ -102,185 +102,150 @@
 			<div class="w3-row w3-padding-64">
     			<div class="w3-container" style = "margin-top: 10px">
       				<h1 class="w3-text-teal">Catching that flight: Visualizing social network with Networkx and Basemap</h1>
-      				<div class = "w3-container w3-center"><img src="./img/map_3.png" alt="skinny-guy" style="width:30%" class = "w3-center">
+      				<div class = "w3-container w3-center"><img src="./img/map_3.png" alt="map_3" style="width:70%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">By the end of this tutorial, you shall be able to construct visualization of flight network such as this</p></div>
 
-      				<p>From high school to college, I often heard people making fun of how small I look, how underweight I must be and how I should do exercise, hit the gym and gain weight in order to have "a nicer physique". I often took these comments with a pinch of salt. For somebody who is 1m69 (5'6) in height and 58kg (127lb) in weight, I have close-to-perfect BMI index (20.3).</p>
-      				<div class = "w3-container w3-center"><img src="http://clipart-library.com/data_images/187613.gif" alt="skinny-guy" style="width:60%" class = "w3-center">
- 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>I don't look quite like this but you get the idea.</em> Image source: Clip Art Library</p></div>
+      				<p>Today, I will introduce very powerful tools to visualize network - Networkx and Basemap. Many interesting problems naturally arrive from or inspire some form of graph models - relationship between vertices (or nodes) and edges that connects these vertices. For example: the outlink and inlink structure of a website can be represented by a directed graph, in which the vertices represent web pages and directed edges represent links from one page to another. Another example is a friend circle, in which vertices represent different people and edges represent the type of relationship.</p>
+
+      				<p>When it comes to complicated networks such as virus outbreak, or cash flows among countries, or seismic waves of the 2005 Earthquake, it remains a challenge to illustrate attributes of the network effectively. We want to quickly and visually communicate various important information at once. More important, we want the audience to quickly grasp the network in its geographical context. Networkx and Basemap (a toolkit of the matplotlib package) provides a “whole-in-one” solution, from creating network graphs over calculating various measures to neat visualizations.</p>
+
+      				<p>In this example, we look at flight route network between airports in the United States of America. This particular example naturally asks for a method to represent vertices (airports) and edges (flight route) which somehow preserves the geographical relationships between different vertices (e.g: we want to look at the graph and tell that this vertex is JFK or Logan Airport or whatever)</p>
                     
-                    <blockquote>"No dude! We are talking about the physique"</blockquote>
+                    <p>At first we load the relevant packages:</p>
+                    <pre><code class ="python"> import pandas as pd
+ import networkx as nx
+ import matplotlib.pyplot as plt
+ from mpl_toolkits.basemap import Basemap as Basemap</code></pre>
 
-                    <p>Ok, I get it, nobody is talking about BMI here. Thinking about it, people may have a good point: given that I am slightly taller and have the exact same weight as an average Vietnamese male (a Wikipedia profile of 1m62 and 58kg), I may "look" a little skinnier. <strong>Look</strong> is the key word here. The logic is quite simple, isn't it? If you stretch yourself a little bit and have the same exact weight, you should look, well, leaner and skinnier. Nonetheless, this is actually serious scientific question to investigate further: How small I am (in weight) for a Vietnamese male of 1m69 in height?</p>
+                    <p>The matplotlib basemap toolkit is a library for plotting 2D data on maps in Python. Networkx is a comprehensive library to study network structure. <a href = "#">Click here</a> to see how Networkx can be used to study the structure of the flight network.</p>
+
+                    <h3>Read airport data:</h3>
 
 
-      				<p>We need a methodological way to investigate into this topic. A good way to go forward is to find as much data of Vietnamese men's height and weight as possible and see where I stand among them.</p>
+      				<p>The first step is to acquire the data and process it. Here, I use the OpenFlight<a href = "#data_source" style = "text-decoration:none"><sup>1</sup></a> database to acquire information about airports and routes. They have very comprehesive data. Unfortunately, the route database is not very up-to-date. It currently contains 59036 routes between 3209 airports on 531 airlines spanning the globe. Until today, there are up to 17 678 commercial airportsn in the world. Neverthelese, the current datasets are good enough for our illustration purpose today.</p>
 
-      				<p>After browsing through the web, I found out a survey research data<a href = "#data_source" style = "text-decoration:none"><sup>1</sup></a> that contains demographic information of more than 10,000 Vietnamese people. I limited the sample size to Male of the age group 18-29. This allows me to have a sample size of 383 Vietnamese males whose age are around 18-29, which is probably good enough for analysis.</p>
+      				<p>There are two relevant datasets:</p>
+      				<ul>
+      					<li>The <em>airport.dat</em> dataset contains geographic information of all the listed airport
+      						<div class = "w3-container w3-center"><img src="./img/table_1.png" alt="table_1" style="width:70%" class = "w3-center">
+ 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">Table 1: a quick peek at what the <em>airport.dat</em> dataset looks like</p></div>
+ 						</li>
+      					<li>the <em>routes.dat</em> dataset contains information of all the flight routes (including airlines, source airport, destination airport, ICAO code, etc.)
+      						<div class = "w3-container w3-center"><img src="./img/table_2.png" alt="table_1" style="width:70%" class = "w3-center">
+ 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">Table 2: the <em>routes.dat</em> dataset looks like</p></div>
+ 						</li>
+      				</ul>	
 
-      				<p>At first, let's plot the data's weight and see how I would fit in among the young Vietnamese men.</p>
+      				<h3>Process airports and routes datasets:</h3>
 
-      				<div class = "w3-container w3-center"><img src="./img/weight_density.png" alt="weight_density" style="width:80%" class = "w3-center">
- 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>The red line shows the median of the sample while the orange line shows the mean</em></p></div>
+      				<p>Networkx cannot read the data in its raw form, so our first job is to process the data to acquire a clean dataframe of routes that could be read by Networkx. Notice how the two dataset are connected by the code of the airport (the three letter IATA code). You can find the full code to process the data in my source code here.</p>
 
-      				<p>This plot suggests that I am slightly below both the average and median weights of those 383 Vietnamese young men. Encouraging news? However, the question is not really about how my weight compares to those in this sample per se, but <em><strong>given the height of 1m68</strong></em> what can we infer about my weight compared to the <strong>entire Vietnamese population</strong>, assuming that the Vietnamese male population is well-represented by these 383 individuals? To do this, we need to dive into a regression analysis.</p>
+      				<p>The aim of our data-processing step is to acquire the following two Panda dataframes:</p>
+      				<ul>
+      					<li>A condensed <strong><em>routes_us</em></strong> data frame where each row represents a unique air route and the total number of airlines operate on that route (for example, there are 3 airlines that operate the flight from Lehigh Valley Airport (ABE) to Atlanta International Airport (ATL) ).
+      						<div class = "w3-container w3-center"><img src="./img/table_3.png" alt="table_3" style="width:70%" class = "w3-center">
+ 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">Table 3: a condensed and cleaned routes dataframe. This dataframe is used by Networkx to construct the graph network with nodes and edges</p></div>
+ 						</li>
+      					<li> A condensed <strong><em>position</em></strong> dataframe where each row represent each USA airports with IATA code, and more importantly, longitudinal and latitudinal details 
+      						<div class = "w3-container w3-center"><img src="./img/table_3.png" alt="table_4" style="width:70%" class = "w3-center">
+ 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">Table 4: a condensed and cleaned position of airport dataset. This dataframe is used by Basemap to plot the nodes (airports) correctly on a USA map</p></div>
+ 						</li>
+      				</ul>      				
 
-      				<p> At first, let's plot a 2-dimensional scatter plot of heights and weights</p>
+      				<p> With the former dataframe, we are ready to draw our very first sketch of the flight networks</p>
                     
-                    <div class = "w3-container w3-center"><img src="./img/weight_vs_height.png" alt="weightvsheight" style="width:80%" class = "w3-center"></div>
  					
- 					<p>Well, I just look, average. In actual fact, if we only look at the data of those who are 168cm in height (imagine a verticle line that goes at 168cm and passes through the red point), I sort of weight a little bit less than these people.</p>
- 					<p> Another important observation is that the plot suggest a positive linear relationship between the height and weight of Vietnamese male. We will do a quantitative analysis to get to the bottom of this relationship.</p>
+ 					<p>At first, we translated our dataframe into a graph. Notice that our graph is a Directed graph, that is, a graph with a set of vertices connected by edges having directions associated with them. This means that in our graph, the two routes JFK-ATL and ATL-JFK are separated since even though they are connecting the same 2 nodes, the two routes have different (opposite) directions.</p>
 
-					<p>First, let's quickly add a "standard least square" line. I will say more about this line later and just show it for now. </p>
+ 					<p> We use Networkx's <strong>from_panda_dataframe()</strong> function to quickly import our graph. Here we create a graph from our dataframe <strong><em>routes_us</em></strong>, where the source is 'Source Airport' column, the target is 'Dest Airport' column using a Directed Graph model. edge_attr means that we can add information to the edges of the graph. I have added the number of airlines operated on a route as the edge attribute</p>
 
-					<div class = "w3-container w3-center"><img src="./img/regression_line.png" alt="line_regress" style="width:80%"></div>
-					<p>We could interpret our least-squares line \(y = -86.32+0.889x\) as suggesting that the usual profile of a Vietnamese male at my age is such that an increase in 1 cm of height would observe an increase in weight of 0.88kg.</p>
+ 					<p>At first we load the relevant packages:</p>
+                    <pre><code class ="python"> graph = nx.from_pandas_dataframe(routes_us, source = 'Source Airport', target = 'Dest Airport',
+                        edge_attr = 'number of flights',create_using = nx.DiGraph())</code></pre>
 
-                    <p>However, this does not answer our question; that is, given somebody of my height (1m68), is 58kg considered too much, too little or just about average? To rephrase this question in a more quantitative manner, if we have a distribution of all of those who are 1m68 in height, what is the chance of my weight falls into the 25,50 or 75-percentile? To do this, let's dig deeper and try to understand the theory behind Regression.</p>
+					<p>Networkx does have a graphical tool that we can use to draw our network. But I guanrantee that it is not going to be very impressive.</p>
 
-					<h3>The theory of Linear Regression:</h3>
+					<pre><code class ="python"> plt.figure(figsize = (10,9))
+ nx.draw_networkx(graph)
+ plt.savefig("./images/map_0.png", format = "png", dpi = 300)
+ plt.show()</code></pre>
+ 					<div class = "w3-container w3-center"><img src="./img/map_0.png" alt="table_4" style="width:70%" class = "w3-center">
+ 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">Graph drawn by Networkx's default draw network function</p></div>
+                    <p>The problem with this rough network is that we really cannot tell which airport is which and how routes are related to one another. Maybe it is a better idea to plot the airport in the exact gepgraphical position in a American map</p>
+                    <blockquote>How do we do that?<br>
+                    Ah hah, Basemap !!!</blockquote>
+
+                    <h3> Plot the network with Basemap:</h3>
+                    <p>Now, we need to help Basemap define the borderline of the USA. Let us define a relatively large map that includes Alaska and Puerto Rico. I also choose the familiar Mercator projection. This is a cylindrical, conformal projection with very large distortion at high latitudes. Yes, this is the wrongly misguided map in every classroom that has Alaska at the same size with the African continent</p>
                     
-                    <p>In a linear regression model, the expected value of the \(Y\) variable (in our case, the weight) is a linear function of \(x\) (height). Let’s call the intercept and slope of this linear relationship \(\beta_0\) and \(\beta_1\); that is, we assume that \(E(Y | X = x) = \beta_0 + \beta_1x\). We do not know \(\beta_0\) and \(\beta_1\) so we treat these as unknown parameters.</p>
-                    
-                    <p>In the most standard linear regression model, we further assume that the conditional distribution of \(Y\) given \(X = x\) is Normal.</p>
-					<p>This means that simple linear regression model:</p>
-                    $$Y = \beta_0 +\beta_1x + \epsilon$$
-                    <p id = "equation_1"> can be rewritten as: </p>
-                    \begin{equation}
-                    \mu_i = \beta_0 + \beta_1x_i
-                    \end{equation}
-                    $$y_i \sim N(\mu_i, \sigma)$$
-				    <p><em>Note that in many models, we can replace <strong>variance</strong> parameter \(\sigma\) with <strong>precision</strong> parameter \(\tau\), where \(\tau = 1/\sigma\).</em></p>
+                    <pre><code class ="python"> plt.figure(figsize = (10,9))
+ m = Basemap(
+         projection='merc',
+         llcrnrlon=-180,
+         llcrnrlat=10,
+         urcrnrlon=-50,
+         urcrnrlat=70,
+         lat_ts=0,
+         resolution='l',
+         suppress_ticks=True)</code></pre>
 
-                    <p><strong>To summarize:</strong> dependent variable \(Y\) follows normal distribution parametrized by mean \(\mu_i\), that is a linear function of \(X\) parametrized by \(\beta_0\),\(\beta_1\), and by precision parameter \(\tau\).
+                    <p>Now, we need to define the position of our airports on the Basemap. Until now, we only have their longitudinal and latitudinal information. We need to find their actual projection onto our Basemap. Notice how I call our <strong><em>position</em></strong> dataset, get the Long and Lat data, and project them onto Basemap surface</p>
+					<pre><code class ="python"> mx, my = m(pos_data['Long'].values, pos_data['Lat'].values)
+ pos = {}
+ for count, elem in enumerate (pos_data['IATA']):
+     pos[elem] = (mx[count], my[count])</code></pre>
+
+                    <p>The next step is to ask Networkx to add the nodes, edges and their attributes to the Basemap. This could be done as follows:</p>
 
 
-					<p> Finally, it only remains to say what we are assuming about the variance/precision. In particular, we are assuming the unknown variance does not depend on \(x\); this assumption is called <strong>homoscedasticity</strong>.
+					<pre><code class ="python"> nx.draw_networkx_nodes(G = graph, pos = pos, node_list = graph.nodes(), 
+                        node_color = 'r', alpha = 0.8, node_size = 100)
+ nx.draw_networkx_edges(G = graph, pos = pos, edge_color='g',
+                        alpha=0.2, arrows = False)</code></pre>
                 
-                	<p> That's a lot, but you can visualize what I have discussed with this photo </p>
+                	<p>The last step is to draw the countries, coastlines, and statelines to make it actually look like a map</p>
 
-                	<div class = "w3-container w3-center"><img src="./img/linear_model.PNG" alt="linear_model" style="width:60%" class = "w3-center"></div>
-
- 					<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>In an actual data analysis problem, all we are given is the black dots—the data. Using the data, our goal is to make inferences about the things we don’t know including \(\beta_0\) and \(\beta_1\) (which determine the shadowy, mysterious, blue dotted line) and \(\sigma\) (which determines the width of the red Normal densities from which the \(y\) data values are drawn).</em>Image source: Joseph Change's Yale S&DS 238 course.</p>
-
-					<h3> Estimating parameters </h3>
-                	<p>Now, there are a couple of ways you can do to estimate \(\beta_0\) and \(\beta_1\).If you estimate such model using <strong>ordinary least squares</strong>, you do not have to worry about the probabilistic formulation, because you are searching for optimal values of \(\beta_0\) and \(\beta_1\) by minimizing the squared errors of fitted values to predicted values. On another hand, you could estimate such model using <strong>maximum likelihood estimation</strong>, where you would be looking for optimal values of parameters by maximizing the likelihood function</p>
-				$$\mathop{\arg\,\max}\limits_{\beta_0, \beta_1, \tau} = \prod_{i=1}^{n} N(y_i;\beta_0 + \beta_1x_i, \tau) $$
+                	<pre><code class ="python"> m.drawcountries(linewidth = 3)
+ m.drawstates(linewidth = 0.2)
+ m.drawcoastlines(linewidth=3)
+ plt.tight_layout()
+ plt.savefig("./images/map_1.png", format = "png", dpi = 300)
+ plt.show()</code></pre>
                 
-                	<p id ="equation_2"><em>Note</em>: an interesting result (not demonstrated mathematically here) is that if we make the further assumption that the errors belong to a normal distribution the least squares estimators are also the maximum likelihood estimators.</p>
+                	<div class = "w3-container w3-center"><img src="./img/map_1.png" alt="table_4" style="width:70%" class = "w3-center">
+ 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"> Basic graph drawn by Networkx and Basemap</p></div>
                 
-                	<h3> Linear Regression with a Bayesian touch: </h3>
+                	<p>Well, this plot is pretty anti-climatic. It looks fine, but not great. Besised the fact that the map looks pretty ugly, we really cannot tell anything from the graph. For example, we want to see more information such as:</p>
+                	<ul>
+                		<li>Which airports are busy?</li>
+                		<li>Which air routes are more prominent?</li>
+                	</ul>
 
-                	<p>The Bayesian approach, instead of maximizing the likelihood function alone, would assume prior distributions for the parameters and use Bayes theorem:</p>
-         
-         			$$posterior \propto prior\times likelihood$$
-                
-                	<p id ="equation_3">The likelihood function is the same as above, but what changes is that you assume some prior distributions for the estimated parameters \(\beta_0\), \(\beta_1\), \(\tau\) and include them into the equation:</p>
-                
-                \begin{equation}
-                f(\beta_0, \beta_1, \tau) \propto \prod_{i=1}^{n}N(y_i;\beta_0 + \beta_1x_i, \tau)f_{\beta_0}(\beta_0)f_{\beta_1}(\beta_1)f_{\tau}(\tau)
-                \end{equation}
 
-                <p>Now, this prior business feels kind of strange. The truth is, there is a very strong philosophical reasoning as to why we could assign an unknown parameters (in our case \(\beta_0\), \(\beta_1\), \(\tau\) ) with some seemingly arbitrary distributions. These prior distributions are meant to capture our beliefs about the situation before seeing the data. After observing some data, we apply Bayes' Rule to obtain a posterior distribution for these unknowns, which takes account of both the prior and the data. From this posterior distribution we can compute predictive distributions for future observations.</p>
+					<p>To answer these questions, maybe it is a good idea to incorporate the total number of incoming and outgoing flights each airport has, and plot them as the size of the airport. For example, an airport with lots of incoming and outgoing flights will have a larger size and more visible on the map.</p>
 
-                <p>The final estimate will depend on the information that comes from your data and from your priors, but the more information is contained in your data, the less influential are priors.</p>
+					<p>To do that, we repeat the same code, with a small tweak:</p>
+					<pre><code class ="python"> nx.draw_networkx_nodes(G = graph, pos = pos, node_list = graph.nodes(), node_color = 'r', alpha = 0.8,
+                       node_size = [counts['total_flight'][s]*3 for s in graph.nodes()])</code></pre>
 
-                <p>"What distributions?" is a different question, since there is unlimited number of choices. There is (in theory) just one correct prior, the one that captures your (subjective) prior beliefs. However, in practice, the choice of the prior distribution can be rather subjective and sometimes, arbitrary. We could just choose a Normal prior with a large standard deviation (small precision); for example, we could assume \(\beta_0\) and \(\beta_1\) come from a Normal distribution with mean 0 and SD 10,000 (precision = \(1 \times 10^{-5}\)) or whatever. This is called an uninformative prior because the distribution will be rather flat (that is, it assign almost equal distribution to any value in a particular range). What follows is that if this type of distribution is our choice, we do not need to worry about which distribution among spread-out distributions might be better because they are all nearly flat in the region where the likelihood is non-negligible, and the posterior distribution doesn’t care what the prior distribution looks like in regions where the likelihood is negligible.</p>
+
+               		<div class = "w3-container w3-center"><img src="./img/map_2.png" alt="map_2" style="width:70%" class = "w3-center">
+ 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"> Graph drawn by Networkx and Basemap, where the node size represents the relative amount of flights in and out the airports</p></div>
+
+                <p>This is a lot better, once you have been more familiar with using Networkx and Basemap, you can start using personalize the map according to your taste.<br>
+
+				For example, here, I restrict my map to mainland airports and style the map a little differently</p>
+
+                <div class = "w3-container w3-center"><img src="./img/map_3.png" alt="map_3" style="width:70%" class = "w3-center">
+ 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"> Graph drawn by Networkx and Basemap, where nodes are label and split into groups of large and small airports.</p></div>
                 <p>Similarly, for the precision \(\tau\), we know these must be nonnegative so it makes sense to choose a distribution restricted to nonnegative values– for example, we could use an Gamma distribution with low shape and scale paraeter. </p>
 
-                <p>Another useful uninformative choice is the uniform distribution. If you choose a uniform distribution for \(\sigma\) or \(\tau\), you may end up with a model that is illustrated by John K. Kruschke</p>
-                <div class = "w3-container w3-center"><img src="./img/john_model.jpg" alt="regression_theory" style="width:60%" class = "w3-center"></div>
- 				<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>John K. Kruschke's illustrated model.</em> Image source: Indiana University.</p>
+			    <p> We can start to make all sorts of interesting observations: For example, a number of large airports are mostly located in the 2 coastal areas (and Vegas, Denver, Dallas/Fort Worth, Houston and Atlanta). We can start to see the domestically air routes are particularly more dense in the West Coast area, as compared to any other geographical places. Interestingly, airports such as DEN (Denver International Airport) looks as if it acts like a hub, that is, it serve as transfer (or stop-over) points to get passengers to their final destination. In future posts, I will introduce Networkx tools to analyze the distribution of edges and characteristics of nodes in such a network using Networkx</p>
                 
-                <h3> JAGS </h3>
-                <p>So far so good for the theory. The issue is that while solving <a href = "#equation_2" style = "text-decoration:none">equation (2)</a> is most of the time achievable with derivative optimization, solving <a href = "#equation_3" style = "text-decoration:none">equation (3)</a> is mathematically more challenging . In vast majority of cases posterior distribution will not be directly available (see how complicated Normal and Gamma distribution is and you have to MULTIPLY a series of those together). Markov Chain Monte Carlo methods is often used for estimating the parameters of the model. JAGS helps us does exactly that.</p>
-                
-                <p> The idea behind JAGS model is that a simulation process based on Markov Chain Monte Carlo will generate many iterations of parameter space \(\theta = (\beta_0; \beta_1; \tau)\). The distribution of the sample generated for each parameter in this parameter space will approximate (proven mathematically) the population distribution of the parameter.</p>
-                
-                <p> We run JAGs in R as follows </p>
-                <p> - At first, we write our model in text format:</p>
-                <pre><code class ="r"> n <- 383 #number of observation
-
- mymodel <- "
- model{
-  for(i in 1:n){
-    # set up our model
-    y[i] ~ dnorm(a + b*x[i], tau)
-  }
-  # state our prior distribution
-  # JAGs requires that we use precision
-  # not variance in linear model
-  a ~ dnorm(0, 1e-6)
-  b ~ dnorm(0, 1e-6)
-  tau ~ dgamma(.01,.01)
-  }"</code></pre>
-				<p> Then, we command JAGs to conduct the simulation. Here I ask JAGs to simulate the value for the parameter space \(\theta\) 10000 times.</p>
-                
-               	<pre><code class="r"> jm <- jags.model(file = textConnection(mymodel), data=list(n=n, x=data$height, y=data$weight))
- cs <- coda.samples(jm, c("a","b","tau"), 10000)
- sample_data <- as.data.frame(cs[[1]])</code></pre>
- 				
-                <p> After such sampling, we achieve the sampled data of \(\theta = (\beta_0; \beta_1; \tau)\) such as this</p>
-
-					<table class="w3-table w3-bordered w3-striped w3-border test w3-hoverable">
-						<tbody><tr class="w3-blue">
-					  		<th></th>
-					  		<th>\(\beta_0\)</th>
-					  		<th>\(\beta_1\)</th>
-					  		<th>\(\tau\)</th>
-						</tr></tbody>
-						<tbody>
-							<tr>
-					  			<td>1</td>
-					  			<td>-66.30087</td>
-					  			<td>0.7654910</td>
-					  			<td>0.01500597</td>
-							</tr>
-							<tr>
-					  			<td>2</td>
-					  			<td>-66.97430</td>
-					  			<td>0.7623432</td>
-					  			<td>0.01610994</td>
-							</tr>
-							<tr>
-					  			<td>3</td>
-					  			<td>-66.88992</td>
-					  			<td>0.7537466</td>
-					  			<td>0.01793836</td>
-							</tr>
-							<tr>
-                            	<td>4</td>
-					  			<td>-66.09944</td>
-					  			<td>0.7537466</td>
-					  			<td>0.01644814</td>
-							</tr>
-						</tbody>
-					</table>
-                    
-                    <p> Great, now we have 10,000 iterations of the parameter space \(\theta\), what do we do now? Remember that by <a href = "#equation_1" style = "text-decoration:none">equation (1)</a>:</p>
-                    $$\mu = \beta_0 + \beta_1x$$
-
-                 <p> This means that if we substitute \(x = 168cm\) to each of the iteration, we will find 10,000 values of weight and thus, the <em>distribution</em> of weights <strong>given that</strong> the height is 168cm.
-
-                 <pre> <code class="r"> cmean <- sample_data$a + sample_data$b*168 </code></pre>
-
-                 <p> We are interested in the percentile of my weight, conditional on my height. For any quantity that can be calculated as a function of the parameters we have monitored in the MCMC, we can get a sample from the posterior distribution for that quantity simply by taking that function of the parameters in our MCMC. We’ll do that for the desired percentile here.</p> 
-                  <pre> <code class="r"> m_perc <- pnorm(q = m_weight, mean = cmean, sd = sample_data$sig) 
- truehist(m_perc)  </code></pre>
-
-                <div class = "w3-container w3-center"> <img src="./img/post_weight.png" alt="post_percentile" style="width:80%" class = "w3-center"></div>
- 				<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>Oophs!!! I will not even be in the range.</em></p>
-                <p> For example, we can find the percentile that my weight is in the first 40 percentile or less</p>
-                 <pre> <code class="r"> mean(m_perc <= 0.4)
- #  [1]  0.994  </code></pre>
-			    <p> So there is overwhelming evidence that conditional on my height of 168cm, my weight 58kg would leave me at the lower percentile of the Vietnamese population. Much as I hesitate to admit, I am indeed very skinny for somebody of 168cm in height. It's really about time to hit the gym and gain some weights. After all, if you cannot trust some well done Bayesian statistics result, what else can you trust?</p>
-                <p> Update: I have included in the data source a dataset that that contains the height and weight of 8169 male and female youth in America (National Longitudinal survey 1997<a href = "#data_source_2" style = "text-decoration:none"><sup>2</sup></a>), could you conduct the same analysis and see where you stand?</p>
                 <hr>
                 <p> The entire Python script for this article can be found at my <a href = "https://github.com/tuangauss/Various-projects/blob/master/R/bayesian_gym.R">Github page</a>.</p>
                 <hr>
-                <p id = "data_source" style = "font-size: 18px"><em>Data Source: Vuong Q. H.. Open Science Framework. 2017 https://doi.org/10.17605/OSF.IO/AFZ2W</em></p>
-                <p id = "data_source_2" style = "font-size: 18px"><em>Data Source: National Longitudinal Surveys | Bureau of Labor Statistics 1997 https://www.nlsinfo.org/investigator/pages/search.jsp?s=NLSY97</em></p>
+                <p id = "data_source" style = "font-size: 18px"><em>Data Source: OpenFlight. Airport, airline and route data 2017 https://openflights.org/data.html</em></p>
     			</div>
     		</div>
 

@@ -127,11 +127,11 @@
       				<p>There are two relevant datasets:</p>
       				<ul>
       					<li>The <em>airport.dat</em> dataset contains geographic information of all the listed airport
-      						<div class = "w3-container w3-center"><img src="./img/table_1.png" alt="table_1" style="width:70%" class = "w3-center">
+      						<div class = "w3-container w3-center"><img src="./img/table_1.PNG" alt="table_1" style="width:100%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">Table 1: a quick peek at what the <em>airport.dat</em> dataset looks like</p></div>
  						</li>
       					<li>the <em>routes.dat</em> dataset contains information of all the flight routes (including airlines, source airport, destination airport, ICAO code, etc.)
-      						<div class = "w3-container w3-center"><img src="./img/table_2.png" alt="table_1" style="width:70%" class = "w3-center">
+      						<div class = "w3-container w3-center"><img src="./img/table_2.PNG" alt="table_1" style="width:100%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">Table 2: the <em>routes.dat</em> dataset looks like</p></div>
  						</li>
       				</ul>	
@@ -143,11 +143,11 @@
       				<p>The aim of our data-processing step is to acquire the following two Panda dataframes:</p>
       				<ul>
       					<li>A condensed <strong><em>routes_us</em></strong> data frame where each row represents a unique air route and the total number of airlines operate on that route (for example, there are 3 airlines that operate the flight from Lehigh Valley Airport (ABE) to Atlanta International Airport (ATL) ).
-      						<div class = "w3-container w3-center"><img src="./img/table_3.png" alt="table_3" style="width:70%" class = "w3-center">
+      						<div class = "w3-container w3-center"><img src="./img/table_3.PNG" alt="table_3" style="width:100%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">Table 3: a condensed and cleaned routes dataframe. This dataframe is used by Networkx to construct the graph network with nodes and edges</p></div>
  						</li>
       					<li> A condensed <strong><em>position</em></strong> dataframe where each row represent each USA airports with IATA code, and more importantly, longitudinal and latitudinal details 
-      						<div class = "w3-container w3-center"><img src="./img/table_3.png" alt="table_4" style="width:70%" class = "w3-center">
+      						<div class = "w3-container w3-center"><img src="./img/table_5.PNG" alt="table_4" style="width:100%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">Table 4: a condensed and cleaned position of airport dataset. This dataframe is used by Basemap to plot the nodes (airports) correctly on a USA map</p></div>
  						</li>
       				</ul>      				

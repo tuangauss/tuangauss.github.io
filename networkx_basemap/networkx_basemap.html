@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python: Visualizing social network with Networkx and Basemap</title>
+		<meta charset = "UTF-8">
+		<meta name = "viewport" content = "width = device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+		<!-- change language is possible -->
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/r.min.js"></script>
+		<!-- Change style by replacing "github" with "default" or anything else"-->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.1.0/highlightjs-line-numbers.min.js"></script>
+		<script>hljs.initLineNumbersOnLoad();</script>
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+		<script type="text/x-mathjax-config">
+			MathJax.Hub.Config({
+			  TeX: { equationNumbers: { autoNumber: "AMS" } }
+			}); </script>
+		<script>
+			// Script to open and close sidebar
+			function w3_open(){
+				document.getElementById("mySideBar").style.display = "block";
+				document.getElementById("myOverlay").style.display = "block";
+			}
+
+			function w3_close(){
+				document.getElementById("mySideBar").style.display = "none";
+				document.getElementById("myOverlay").style.display = "none";		
+			}
+		</script>
+
+		<style>
+		.w3-sidebar a {font-family: "Roboto", sans-serif}
+
+		body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
+
+        p, li{
+        font-family: Helvetica, Arial, sans-serif;	
+        font-size: 16px;
+        }
+
+		/* for block of numbers */
+		td.hljs-ln-numbers {
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+
+			text-align: center;
+			color: #ccc;
+			border-right: 1px solid #CCC;
+			vertical-align: top;
+			padding-right: 5px;
+			/* your custom style here */
+		}
+
+		/* for block of code */
+		td.hljs-ln-code {
+			padding-left: 10px;
+		}
+		</style>
+	</head>
+	<body class = "w3-content" style = "max-width:1200px" data-gr-c-s-loaded = "true">
+		<!-- Sidebar/menu -->
+		<nav class = "w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style = "z-index:3; width:250px; display: none;" id="mySideBar">
+			<div class = "w3-container w3-display-container w3-padding-16">
+
+				<i onclick = "w3_close()" class = "fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
+				<h3 class = "w3-wide">
+					<a href = "/index.html" style = "text-decoration:none"><b>Main</b></a>
+				</h3>
+
+			</div>
+
+			<div class = "w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
+				<a href="/statistics.html" class="w3-bar-item w3-button">Statistics</a>
+				<a href="/machine_learning.html" class="w3-bar-item w3-button">Machine Learning</a>
+				<a href="#" class="w3-bar-item w3-button">Deep Learning</a>
+			</div>
+			<a href = "/resume.html" class = "w3-bar-item w3-button w3-padding">Resume</a>
+			<a href = "#footer" class = "w3-bar-item w3-button w3-padding">Contact</a>
+		</nav>
+		<!-- Top menu on small screens -->
+		<header class="w3-bar w3-top w3-hide-large w3-black w3-xlarge">
+		  <div class="w3-bar-item w3-padding-24 w3-wide"><a href = "/index.html" style = "text-decoration:none">Main</a></div>
+		  <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-24 w3-right" onclick="w3_open()">
+		  	<i class="fa fa-bars"></i>
+		  </a>
+		</header>
+
+		<!-- Overlay effect when opening sidebar on small screens -->
+		<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor: pointer; display: none;" title="close side menu" id="myOverlay"></div>
+
+		<!-- Main contant: when side bar is visible, shift to the right by 250px -->
+		<div class = "w3-main" style = "margin-left:250px">
+			<div class="w3-row w3-padding-64">
+    			<div class="w3-container" style = "margin-top: 10px">
+      				<h1 class="w3-text-teal">Catching that flight: Visualizing social network with Networkx and Basemap</h1>
+      				<div class = "w3-container w3-center"><img src="./img/map_3.png" alt="skinny-guy" style="width:30%" class = "w3-center">
+ 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">By the end of this tutorial, you shall be able to construct visualization of flight network such as this</p></div>
+
+      				<p>From high school to college, I often heard people making fun of how small I look, how underweight I must be and how I should do exercise, hit the gym and gain weight in order to have "a nicer physique". I often took these comments with a pinch of salt. For somebody who is 1m69 (5'6) in height and 58kg (127lb) in weight, I have close-to-perfect BMI index (20.3).</p>
+      				<div class = "w3-container w3-center"><img src="http://clipart-library.com/data_images/187613.gif" alt="skinny-guy" style="width:60%" class = "w3-center">
+ 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>I don't look quite like this but you get the idea.</em> Image source: Clip Art Library</p></div>
+                    
+                    <blockquote>"No dude! We are talking about the physique"</blockquote>
+
+                    <p>Ok, I get it, nobody is talking about BMI here. Thinking about it, people may have a good point: given that I am slightly taller and have the exact same weight as an average Vietnamese male (a Wikipedia profile of 1m62 and 58kg), I may "look" a little skinnier. <strong>Look</strong> is the key word here. The logic is quite simple, isn't it? If you stretch yourself a little bit and have the same exact weight, you should look, well, leaner and skinnier. Nonetheless, this is actually serious scientific question to investigate further: How small I am (in weight) for a Vietnamese male of 1m69 in height?</p>
+
+
+      				<p>We need a methodological way to investigate into this topic. A good way to go forward is to find as much data of Vietnamese men's height and weight as possible and see where I stand among them.</p>
+
+      				<p>After browsing through the web, I found out a survey research data<a href = "#data_source" style = "text-decoration:none"><sup>1</sup></a> that contains demographic information of more than 10,000 Vietnamese people. I limited the sample size to Male of the age group 18-29. This allows me to have a sample size of 383 Vietnamese males whose age are around 18-29, which is probably good enough for analysis.</p>
+
+      				<p>At first, let's plot the data's weight and see how I would fit in among the young Vietnamese men.</p>
+
+      				<div class = "w3-container w3-center"><img src="./img/weight_density.png" alt="weight_density" style="width:80%" class = "w3-center">
+ 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>The red line shows the median of the sample while the orange line shows the mean</em></p></div>
+
+      				<p>This plot suggests that I am slightly below both the average and median weights of those 383 Vietnamese young men. Encouraging news? However, the question is not really about how my weight compares to those in this sample per se, but <em><strong>given the height of 1m68</strong></em> what can we infer about my weight compared to the <strong>entire Vietnamese population</strong>, assuming that the Vietnamese male population is well-represented by these 383 individuals? To do this, we need to dive into a regression analysis.</p>
+
+      				<p> At first, let's plot a 2-dimensional scatter plot of heights and weights</p>
+                    
+                    <div class = "w3-container w3-center"><img src="./img/weight_vs_height.png" alt="weightvsheight" style="width:80%" class = "w3-center"></div>
+ 					
+ 					<p>Well, I just look, average. In actual fact, if we only look at the data of those who are 168cm in height (imagine a verticle line that goes at 168cm and passes through the red point), I sort of weight a little bit less than these people.</p>
+ 					<p> Another important observation is that the plot suggest a positive linear relationship between the height and weight of Vietnamese male. We will do a quantitative analysis to get to the bottom of this relationship.</p>
+
+					<p>First, let's quickly add a "standard least square" line. I will say more about this line later and just show it for now. </p>
+
+					<div class = "w3-container w3-center"><img src="./img/regression_line.png" alt="line_regress" style="width:80%"></div>
+					<p>We could interpret our least-squares line \(y = -86.32+0.889x\) as suggesting that the usual profile of a Vietnamese male at my age is such that an increase in 1 cm of height would observe an increase in weight of 0.88kg.</p>
+
+                    <p>However, this does not answer our question; that is, given somebody of my height (1m68), is 58kg considered too much, too little or just about average? To rephrase this question in a more quantitative manner, if we have a distribution of all of those who are 1m68 in height, what is the chance of my weight falls into the 25,50 or 75-percentile? To do this, let's dig deeper and try to understand the theory behind Regression.</p>
+
+					<h3>The theory of Linear Regression:</h3>
+                    
+                    <p>In a linear regression model, the expected value of the \(Y\) variable (in our case, the weight) is a linear function of \(x\) (height). Let’s call the intercept and slope of this linear relationship \(\beta_0\) and \(\beta_1\); that is, we assume that \(E(Y | X = x) = \beta_0 + \beta_1x\). We do not know \(\beta_0\) and \(\beta_1\) so we treat these as unknown parameters.</p>
+                    
+                    <p>In the most standard linear regression model, we further assume that the conditional distribution of \(Y\) given \(X = x\) is Normal.</p>
+					<p>This means that simple linear regression model:</p>
+                    $$Y = \beta_0 +\beta_1x + \epsilon$$
+                    <p id = "equation_1"> can be rewritten as: </p>
+                    \begin{equation}
+                    \mu_i = \beta_0 + \beta_1x_i
+                    \end{equation}
+                    $$y_i \sim N(\mu_i, \sigma)$$
+				    <p><em>Note that in many models, we can replace <strong>variance</strong> parameter \(\sigma\) with <strong>precision</strong> parameter \(\tau\), where \(\tau = 1/\sigma\).</em></p>
+
+                    <p><strong>To summarize:</strong> dependent variable \(Y\) follows normal distribution parametrized by mean \(\mu_i\), that is a linear function of \(X\) parametrized by \(\beta_0\),\(\beta_1\), and by precision parameter \(\tau\).
+
+
+					<p> Finally, it only remains to say what we are assuming about the variance/precision. In particular, we are assuming the unknown variance does not depend on \(x\); this assumption is called <strong>homoscedasticity</strong>.
+                
+                	<p> That's a lot, but you can visualize what I have discussed with this photo </p>
+
+                	<div class = "w3-container w3-center"><img src="./img/linear_model.PNG" alt="linear_model" style="width:60%" class = "w3-center"></div>
+
+ 					<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>In an actual data analysis problem, all we are given is the black dots—the data. Using the data, our goal is to make inferences about the things we don’t know including \(\beta_0\) and \(\beta_1\) (which determine the shadowy, mysterious, blue dotted line) and \(\sigma\) (which determines the width of the red Normal densities from which the \(y\) data values are drawn).</em>Image source: Joseph Change's Yale S&DS 238 course.</p>
+
+					<h3> Estimating parameters </h3>
+                	<p>Now, there are a couple of ways you can do to estimate \(\beta_0\) and \(\beta_1\).If you estimate such model using <strong>ordinary least squares</strong>, you do not have to worry about the probabilistic formulation, because you are searching for optimal values of \(\beta_0\) and \(\beta_1\) by minimizing the squared errors of fitted values to predicted values. On another hand, you could estimate such model using <strong>maximum likelihood estimation</strong>, where you would be looking for optimal values of parameters by maximizing the likelihood function</p>
+				$$\mathop{\arg\,\max}\limits_{\beta_0, \beta_1, \tau} = \prod_{i=1}^{n} N(y_i;\beta_0 + \beta_1x_i, \tau) $$
+                
+                	<p id ="equation_2"><em>Note</em>: an interesting result (not demonstrated mathematically here) is that if we make the further assumption that the errors belong to a normal distribution the least squares estimators are also the maximum likelihood estimators.</p>
+                
+                	<h3> Linear Regression with a Bayesian touch: </h3>
+
+                	<p>The Bayesian approach, instead of maximizing the likelihood function alone, would assume prior distributions for the parameters and use Bayes theorem:</p>
+         
+         			$$posterior \propto prior\times likelihood$$
+                
+                	<p id ="equation_3">The likelihood function is the same as above, but what changes is that you assume some prior distributions for the estimated parameters \(\beta_0\), \(\beta_1\), \(\tau\) and include them into the equation:</p>
+                
+                \begin{equation}
+                f(\beta_0, \beta_1, \tau) \propto \prod_{i=1}^{n}N(y_i;\beta_0 + \beta_1x_i, \tau)f_{\beta_0}(\beta_0)f_{\beta_1}(\beta_1)f_{\tau}(\tau)
+                \end{equation}
+
+                <p>Now, this prior business feels kind of strange. The truth is, there is a very strong philosophical reasoning as to why we could assign an unknown parameters (in our case \(\beta_0\), \(\beta_1\), \(\tau\) ) with some seemingly arbitrary distributions. These prior distributions are meant to capture our beliefs about the situation before seeing the data. After observing some data, we apply Bayes' Rule to obtain a posterior distribution for these unknowns, which takes account of both the prior and the data. From this posterior distribution we can compute predictive distributions for future observations.</p>
+
+                <p>The final estimate will depend on the information that comes from your data and from your priors, but the more information is contained in your data, the less influential are priors.</p>
+
+                <p>"What distributions?" is a different question, since there is unlimited number of choices. There is (in theory) just one correct prior, the one that captures your (subjective) prior beliefs. However, in practice, the choice of the prior distribution can be rather subjective and sometimes, arbitrary. We could just choose a Normal prior with a large standard deviation (small precision); for example, we could assume \(\beta_0\) and \(\beta_1\) come from a Normal distribution with mean 0 and SD 10,000 (precision = \(1 \times 10^{-5}\)) or whatever. This is called an uninformative prior because the distribution will be rather flat (that is, it assign almost equal distribution to any value in a particular range). What follows is that if this type of distribution is our choice, we do not need to worry about which distribution among spread-out distributions might be better because they are all nearly flat in the region where the likelihood is non-negligible, and the posterior distribution doesn’t care what the prior distribution looks like in regions where the likelihood is negligible.</p>
+                <p>Similarly, for the precision \(\tau\), we know these must be nonnegative so it makes sense to choose a distribution restricted to nonnegative values– for example, we could use an Gamma distribution with low shape and scale paraeter. </p>
+
+                <p>Another useful uninformative choice is the uniform distribution. If you choose a uniform distribution for \(\sigma\) or \(\tau\), you may end up with a model that is illustrated by John K. Kruschke</p>
+                <div class = "w3-container w3-center"><img src="./img/john_model.jpg" alt="regression_theory" style="width:60%" class = "w3-center"></div>
+ 				<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>John K. Kruschke's illustrated model.</em> Image source: Indiana University.</p>
+                
+                <h3> JAGS </h3>
+                <p>So far so good for the theory. The issue is that while solving <a href = "#equation_2" style = "text-decoration:none">equation (2)</a> is most of the time achievable with derivative optimization, solving <a href = "#equation_3" style = "text-decoration:none">equation (3)</a> is mathematically more challenging . In vast majority of cases posterior distribution will not be directly available (see how complicated Normal and Gamma distribution is and you have to MULTIPLY a series of those together). Markov Chain Monte Carlo methods is often used for estimating the parameters of the model. JAGS helps us does exactly that.</p>
+                
+                <p> The idea behind JAGS model is that a simulation process based on Markov Chain Monte Carlo will generate many iterations of parameter space \(\theta = (\beta_0; \beta_1; \tau)\). The distribution of the sample generated for each parameter in this parameter space will approximate (proven mathematically) the population distribution of the parameter.</p>
+                
+                <p> We run JAGs in R as follows </p>
+                <p> - At first, we write our model in text format:</p>
+                <pre><code class ="r"> n <- 383 #number of observation
+
+ mymodel <- "
+ model{
+  for(i in 1:n){
+    # set up our model
+    y[i] ~ dnorm(a + b*x[i], tau)
+  }
+  # state our prior distribution
+  # JAGs requires that we use precision
+  # not variance in linear model
+  a ~ dnorm(0, 1e-6)
+  b ~ dnorm(0, 1e-6)
+  tau ~ dgamma(.01,.01)
+  }"</code></pre>
+				<p> Then, we command JAGs to conduct the simulation. Here I ask JAGs to simulate the value for the parameter space \(\theta\) 10000 times.</p>
+                
+               	<pre><code class="r"> jm <- jags.model(file = textConnection(mymodel), data=list(n=n, x=data$height, y=data$weight))
+ cs <- coda.samples(jm, c("a","b","tau"), 10000)
+ sample_data <- as.data.frame(cs[[1]])</code></pre>
+ 				
+                <p> After such sampling, we achieve the sampled data of \(\theta = (\beta_0; \beta_1; \tau)\) such as this</p>
+
+					<table class="w3-table w3-bordered w3-striped w3-border test w3-hoverable">
+						<tbody><tr class="w3-blue">
+					  		<th></th>
+					  		<th>\(\beta_0\)</th>
+					  		<th>\(\beta_1\)</th>
+					  		<th>\(\tau\)</th>
+						</tr></tbody>
+						<tbody>
+							<tr>
+					  			<td>1</td>
+					  			<td>-66.30087</td>
+					  			<td>0.7654910</td>
+					  			<td>0.01500597</td>
+							</tr>
+							<tr>
+					  			<td>2</td>
+					  			<td>-66.97430</td>
+					  			<td>0.7623432</td>
+					  			<td>0.01610994</td>
+							</tr>
+							<tr>
+					  			<td>3</td>
+					  			<td>-66.88992</td>
+					  			<td>0.7537466</td>
+					  			<td>0.01793836</td>
+							</tr>
+							<tr>
+                            	<td>4</td>
+					  			<td>-66.09944</td>
+					  			<td>0.7537466</td>
+					  			<td>0.01644814</td>
+							</tr>
+						</tbody>
+					</table>
+                    
+                    <p> Great, now we have 10,000 iterations of the parameter space \(\theta\), what do we do now? Remember that by <a href = "#equation_1" style = "text-decoration:none">equation (1)</a>:</p>
+                    $$\mu = \beta_0 + \beta_1x$$
+
+                 <p> This means that if we substitute \(x = 168cm\) to each of the iteration, we will find 10,000 values of weight and thus, the <em>distribution</em> of weights <strong>given that</strong> the height is 168cm.
+
+                 <pre> <code class="r"> cmean <- sample_data$a + sample_data$b*168 </code></pre>
+
+                 <p> We are interested in the percentile of my weight, conditional on my height. For any quantity that can be calculated as a function of the parameters we have monitored in the MCMC, we can get a sample from the posterior distribution for that quantity simply by taking that function of the parameters in our MCMC. We’ll do that for the desired percentile here.</p> 
+                  <pre> <code class="r"> m_perc <- pnorm(q = m_weight, mean = cmean, sd = sample_data$sig) 
+ truehist(m_perc)  </code></pre>
+
+                <div class = "w3-container w3-center"> <img src="./img/post_weight.png" alt="post_percentile" style="width:80%" class = "w3-center"></div>
+ 				<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>Oophs!!! I will not even be in the range.</em></p>
+                <p> For example, we can find the percentile that my weight is in the first 40 percentile or less</p>
+                 <pre> <code class="r"> mean(m_perc <= 0.4)
+ #  [1]  0.994  </code></pre>
+			    <p> So there is overwhelming evidence that conditional on my height of 168cm, my weight 58kg would leave me at the lower percentile of the Vietnamese population. Much as I hesitate to admit, I am indeed very skinny for somebody of 168cm in height. It's really about time to hit the gym and gain some weights. After all, if you cannot trust some well done Bayesian statistics result, what else can you trust?</p>
+                <p> Update: I have included in the data source a dataset that that contains the height and weight of 8169 male and female youth in America (National Longitudinal survey 1997<a href = "#data_source_2" style = "text-decoration:none"><sup>2</sup></a>), could you conduct the same analysis and see where you stand?</p>
+                <hr>
+                <p> The entire Python script for this article can be found at my <a href = "https://github.com/tuangauss/Various-projects/blob/master/R/bayesian_gym.R">Github page</a>.</p>
+                <hr>
+                <p id = "data_source" style = "font-size: 18px"><em>Data Source: Vuong Q. H.. Open Science Framework. 2017 https://doi.org/10.17605/OSF.IO/AFZ2W</em></p>
+                <p id = "data_source_2" style = "font-size: 18px"><em>Data Source: National Longitudinal Surveys | Bureau of Labor Statistics 1997 https://www.nlsinfo.org/investigator/pages/search.jsp?s=NLSY97</em></p>
+    			</div>
+    		</div>
+
+			<!-- Footer, contact form and details -->
+			<footer class = "w3-padding-64 w3-light-gray w3-small w3-center" id="footer">
+				<div class = "w3-row-padding">
+					<div class = "w3-col s4">
+						<h4>Contact Form</h4>
+						<p>Got some ideas or cool projects?</p>
+						<!-- Need to see how to work out this-->
+						<form action = "/action_page.php" target="blank">
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Name" name="Name" required>
+							</p>
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Email" name="Email" required>
+							</p>
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Subject" name="Subject" required>
+							</p>
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Message" name="Message" required>
+							</p>
+							<button type = "submit" class ="w3-button w3-block w3-black">Send</button>	
+						</form>
+					</div>
+
+					<!-- Social media-->
+					<div class = "w3-right w3-col s4 w3-justify">
+						<h4>Contact</h4>
+						<p>
+							<i class="fa fa-fw fa-map-marker"></i> Yale University, New Haven
+						</p>
+						<p>
+							<i class= "fa fa-fw fa-phone"></i> (203)-435-6710
+						</p>
+						<p>
+							<i class="fa fa-fw fa-envelope"></i> tuandoan.nguyen@yale.edu
+						</p>
+						<a class="fa fa-facebook-official w3-hover-opacity w3-large" href = "https://www.facebook.com/tuan.doannguyen" style = "text-decoration:none"></a>
+						<a class="fa fa-linkedin w3-hover-opacity w3-large" href = "https://www.linkedin.com/in/tuan-nguyen-doan/" style = "text-decoration:none"></a>
+						<a class="fa fa-instagram w3-hover-opacity w3-large" href = "https://www.instagram.com/t.nguyen.1996/" style = "text-decoration:none"></a>
+						<a class="fa fa-github w3-hover-opacity w3-large" href = "https://github.com/tuangauss" style = "text-decoration:none"></a>
+					</div>		
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>

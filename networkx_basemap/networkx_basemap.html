@@ -102,7 +102,7 @@
 			<div class="w3-row w3-padding-64">
     			<div class="w3-container" style = "margin-top: 10px">
       				<h1 class="w3-text-teal">Catching that flight: Visualizing social network with Networkx and Basemap</h1>
-      				<div class = "w3-container w3-center"><img src="./img/map_3.png" alt="map_3" style="width:70%" class = "w3-center">
+      				<div class = "w3-container w3-center"><img src="./img/map_3.png" alt="map_3" style="width:100%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">By the end of this tutorial, you shall be able to construct visualization of flight network such as this</p></div>
 
       				<p>Today, I will introduce very powerful tools to visualize network - Networkx and Basemap. Many interesting problems naturally arrive from or inspire some form of graph models - relationship between vertices (or nodes) and edges that connects these vertices. For example: the outlink and inlink structure of a website can be represented by a directed graph, in which the vertices represent web pages and directed edges represent links from one page to another. Another example is a friend circle, in which vertices represent different people and edges represent the type of relationship.</p>
@@ -143,7 +143,7 @@
       				<p>The aim of our data-processing step is to acquire the following two Panda dataframes:</p>
       				<ul>
       					<li>A condensed <strong><em>routes_us</em></strong> data frame where each row represents a unique air route and the total number of airlines operate on that route (for example, there are 3 airlines that operate the flight from Lehigh Valley Airport (ABE) to Atlanta International Airport (ATL) ).
-      						<div class = "w3-container w3-center"><img src="./img/table_3.PNG" alt="table_3" style="width:100%" class = "w3-center">
+      						<div class = "w3-container w3-center"><img src="./img/table_3.PNG" alt="table_3" style="width:60%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">Table 3: a condensed and cleaned routes dataframe. This dataframe is used by Networkx to construct the graph network with nodes and edges</p></div>
  						</li>
       					<li> A condensed <strong><em>position</em></strong> dataframe where each row represent each USA airports with IATA code, and more importantly, longitudinal and latitudinal details 
@@ -169,7 +169,7 @@
  nx.draw_networkx(graph)
  plt.savefig("./images/map_0.png", format = "png", dpi = 300)
  plt.show()</code></pre>
- 					<div class = "w3-container w3-center"><img src="./img/map_0.png" alt="table_4" style="width:70%" class = "w3-center">
+ 					<div class = "w3-container w3-center"><img src="./img/map_0.png" alt="table_4" style="width:90%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">Graph drawn by Networkx's default draw network function</p></div>
                     <p>The problem with this rough network is that we really cannot tell which airport is which and how routes are related to one another. Maybe it is a better idea to plot the airport in the exact gepgraphical position in a American map</p>
                     <blockquote>How do we do that?<br>
@@ -212,7 +212,7 @@
  plt.savefig("./images/map_1.png", format = "png", dpi = 300)
  plt.show()</code></pre>
                 
-                	<div class = "w3-container w3-center"><img src="./img/map_1.png" alt="table_4" style="width:70%" class = "w3-center">
+                	<div class = "w3-container w3-center"><img src="./img/map_1.png" alt="table_4" style="width:90%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"> Basic graph drawn by Networkx and Basemap</p></div>
                 
                 	<p>Well, this plot is pretty anti-climatic. It looks fine, but not great. Besised the fact that the map looks pretty ugly, we really cannot tell anything from the graph. For example, we want to see more information such as:</p>
@@ -229,14 +229,14 @@
                        node_size = [counts['total_flight'][s]*3 for s in graph.nodes()])</code></pre>
 
 
-               		<div class = "w3-container w3-center"><img src="./img/map_2.png" alt="map_2" style="width:70%" class = "w3-center">
+               		<div class = "w3-container w3-center"><img src="./img/map_2.png" alt="map_2" style="width:90%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"> Graph drawn by Networkx and Basemap, where the node size represents the relative amount of flights in and out the airports</p></div>
 
                 <p>This is a lot better, once you have been more familiar with using Networkx and Basemap, you can start using personalize the map according to your taste.<br>
 
 				For example, here, I restrict my map to mainland airports and style the map a little differently</p>
 
-                <div class = "w3-container w3-center"><img src="./img/map_3.png" alt="map_3" style="width:70%" class = "w3-center">
+                <div class = "w3-container w3-center"><img src="./img/map_3.png" alt="map_3" style="width:90%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"> Graph drawn by Networkx and Basemap, where nodes are label and split into groups of large and small airports.</p></div>
                 <p>Similarly, for the precision \(\tau\), we know these must be nonnegative so it makes sense to choose a distribution restricted to nonnegative values– for example, we could use an Gamma distribution with low shape and scale paraeter. </p>
 

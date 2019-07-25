@@ -150,7 +150,7 @@
 					<div class = "w3-container w3-center"><img src="./img/cal3.png" alt="cal3" style="width:80%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>Left: the posterior conditional probability of the statement “The sun rises everyday” as Adam updates his belief daily. Right: Comparison between two different initial priors (1% vs 0.01%)</em></p></div>
 
-                    <p>With some simple R code, I repeated the calculations above and illustrated how Adam updated his belief. You can find the source code <a href = "https://github.com/tuangauss/Various-projects/blob/master/R/bayes_god.R" style = "text-decoration:none">here</a></p>. It takes him as few as 4 days to be more than 99% convinced in the daily occurrence of sunrise. Even if Adam is a lot more skeptical (as he should have been against the snake or Satan T.T) and assigned the initial belief at a mere 0.01%, it still would take only 7 days to convince him.</p>
+                    <p>With some simple R code, I repeated the calculations above and illustrated how Adam updated his belief. You can find the source code <a href = "https://github.com/tuangauss/Various-projects/blob/master/R/bayes_god.R" style = "text-decoration:none">here</a> It takes him as few as 4 days to be more than 99% convinced in the daily occurrence of sunrise. Even if Adam is a lot more skeptical (as he should have been against the snake or Satan T.T) and assigned the initial belief at a mere 0.01%, it still would take only 7 days to convince him.</p>
 
                     <h3>2. Bayes’ Theorem and the God of Miracles:</h3>
 					
@@ -188,7 +188,7 @@
                 		<li>The bigger question is: How many different miracles we need before we can establish the conditional probability of God’s existence?</li>
                 	</ul>
 
-                	<b>Let us consider the case of multiple independent testimonies. <b>A good way to think about it is to use Bayesian updating for each new person arrives and testifies</b>. And so, we arrive at a result very similar to the sunrise example in the previous part — where the conditional probability converges to 1.</b>
+                	<p>Let us consider the case of multiple independent testimonies. <b>A good way to think about it is to use Bayesian updating for each new person arrives and testifies</b>. And so, we arrive at a result very similar to the sunrise example in the previous part — where the conditional probability converges to 1.</p>
                 	
                 	<p>Here, let tackle the problem a little bit differently and try to exploit the independence assumption to simplify the math. Assuming that for a particular miracle \(M\), a person \(i\) will give a testimony \(T_i\), we set up the conditional probability for the miracle given \(n\) testimonies:</p>
 
@@ -217,9 +217,9 @@
                 <hr>
                 <p> The entire R script for this article can be found at my <a href = "https://github.com/tuangauss/Various-projects/blob/master/R/bayes_god.R">Github page</a>.</p>
                 <hr>
-                <p id = "data_source" style = "font-size: 18px">Mcgrayne, Sharon Bertsch.<em>The Theory That Would Not Die: How Bayes’ Rule Cracked the Enigma Code, Hunted Down Russian Submarines, and Emerged Triumphant from Two Centuries of Controversy.</em> Yale University Press, 2011</p>
-                <p id = "data_source_2" style = "font-size: 18px">Hume, <em>An Enquiry concerning Human Understanding X, i, 86</em></p>
-                <p id = "data_source_3" style = "font-size: 18px">Swinburne, Richard, <em>The Resurrection of God Incarnate</em>, Oxford University Press, 2003</p>
+                <p id = "data_source" style = "font-size: 18px">[1] Mcgrayne, Sharon Bertsch.<em>The Theory That Would Not Die: How Bayes’ Rule Cracked the Enigma Code, Hunted Down Russian Submarines, and Emerged Triumphant from Two Centuries of Controversy.</em> Yale University Press, 2011</p>
+                <p id = "data_source_2" style = "font-size: 18px">[2] Hume, <em>An Enquiry concerning Human Understanding X, i, 86</em></p>
+                <p id = "data_source_3" style = "font-size: 18px">[3] Swinburne, Richard, <em>The Resurrection of God Incarnate</em>, Oxford University Press, 2003</p>
     			</div>
     		</div>
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>How R and Bayesian statistics convince me to finally hit the gym</title>
+		<title>A Bayesian quest to find God</title>
 		<meta charset = "UTF-8">
 		<meta name = "viewport" content = "width = device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -101,22 +101,22 @@
 		<div class = "w3-main" style = "margin-left:250px">
 			<div class="w3-row w3-padding-64">
     			<div class="w3-container" style = "margin-top: 10px">
-      				<h1 class="w3-text-teal">The story of the tiny Asian man - How Bayesian statistics convince me to finally hit the gym</h1>
-      				<blockquote>"You need to eat more! For a person of your height, you look really skinny"<br>
-                    "Dude! Hit the gymn and your physique will get a lot better"</blockquote>
-
-      				<p>From high school to college, I often heard people making fun of how small I look, how underweight I must be and how I should do exercise, hit the gym and gain weight in order to have "a nicer physique". I often took these comments with a pinch of salt. For somebody who is 1m69 (5'6) in height and 58kg (127lb) in weight, I have close-to-perfect BMI index (20.3).</p>
-      				<div class = "w3-container w3-center"><img src="http://clipart-library.com/data_images/187613.gif" alt="skinny-guy" style="width:60%" class = "w3-center">
- 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>I don't look quite like this but you get the idea.</em> Image source: Clip Art Library</p></div>
+      				<h1 class="w3-text-teal">A Bayesian quest to find God</h1>
+      				<blockquote>Bayes’ theorem and the probabilistic answers to the most fundamental question of all: “Does God exist?”</blockquote>
+      				<h2 class="w3-text-teal">This article focuses not on formula and numbers, but a fascinating story where Bayes’theorem establishes itself across the most controversial discussions in philosophy, epistemology and religions.</h2>
+      				<p>We Data Scientists and Statisticians love Bayes’ theorem.</p>
+      				<p>A seemingly simple idea: we get updated and improved belief by updating our initial belief with newly acquired information, Bayes’ theorem has been touted as one of the most powerful method for generating knowledge.</p>
+      				<div class = "w3-container w3-center"><img src="/img/sheldon.jpeg" alt="sheldon" style="width:60%" class = "w3-center">
+ 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>Sheldon explaining how he is estimating his life expectancy, using Bayes’s theorem.</em> Image Source: Scientific America</p></div>
                     
-                    <blockquote>"No dude! We are talking about the physique"</blockquote>
+ 					<p>Alan Turing used Bayes to break Enigma — the Germany navy’s secret codes. We use Bayesian programs to whisk spam emails into junk bins (“Naive Bayes, anyone?”), assess our medical records, discovers how genes are controlled and regulated, assisted Coast guards and homeland security, etc.<a href = "#data_source" style = "text-decoration:none"><sup>[1]</sup></a> It is so popular that it even made a guest appearance on The Big Bang Theorem.</p>
 
                     <p>Ok, I get it, nobody is talking about BMI here. Thinking about it, people may have a good point: given that I am slightly taller and have the exact same weight as an average Vietnamese male (a Wikipedia profile of 1m62 and 58kg), I may "look" a little skinnier. <strong>Look</strong> is the key word here. The logic is quite simple, isn't it? If you stretch yourself a little bit and have the same exact weight, you should look, well, leaner and skinnier. Nonetheless, this is actually serious scientific question to investigate further: How small I am (in weight) for a Vietnamese male of 1m69 in height?</p>
 
 
       				<p>We need a methodological way to investigate into this topic. A good way to go forward is to find as much data of Vietnamese men's height and weight as possible and see where I stand among them.</p>
 
-      				<p>After browsing through the web, I found out a survey research data<a href = "#data_source" style = "text-decoration:none"><sup>1</sup></a> that contains demographic information of more than 10,000 Vietnamese people. I limited the sample size to Male of the age group 18-29. This allows me to have a sample size of 383 Vietnamese males whose age are around 18-29, which is probably good enough for analysis.</p>
+      				<p>After browsing through the web, I found out a survey research data that contains demographic information of more than 10,000 Vietnamese people. I limited the sample size to Male of the age group 18-29. This allows me to have a sample size of 383 Vietnamese males whose age are around 18-29, which is probably good enough for analysis.</p>
 
       				<p>At first, let's plot the data's weight and see how I would fit in among the young Vietnamese men.</p>
 
@@ -279,7 +279,7 @@
                 <hr>
                 <p> The entire Python script for this article can be found at my <a href = "https://github.com/tuangauss/Various-projects/blob/master/R/bayesian_gym.R">Github page</a>.</p>
                 <hr>
-                <p id = "data_source" style = "font-size: 18px"><em>Data Source: Vuong Q. H.. Open Science Framework. 2017 https://doi.org/10.17605/OSF.IO/AFZ2W</em></p>
+                <p id = "data_source" style = "font-size: 18px">Mcgrayne, Sharon Bertsch.<em>The Theory That Would Not Die: How Bayes’ Rule Cracked the Enigma Code, Hunted Down Russian Submarines, and Emerged Triumphant from Two Centuries of Controversy.</em> Yale University Press, 2011</p>
                 <p id = "data_source_2" style = "font-size: 18px"><em>Data Source: National Longitudinal Surveys | Bureau of Labor Statistics 1997 https://www.nlsinfo.org/investigator/pages/search.jsp?s=NLSY97</em></p>
     			</div>
     		</div>

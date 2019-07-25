@@ -103,20 +103,27 @@
     			<div class="w3-container" style = "margin-top: 10px">
       				<h1 class="w3-text-teal">A Bayesian quest to find God</h1>
       				<blockquote>Bayes’ theorem and the probabilistic answers to the most fundamental question of all: “Does God exist?”</blockquote>
-      				<h2 class="w3-text-teal">This article focuses not on formula and numbers, but a fascinating story where Bayes’theorem establishes itself across the most controversial discussions in philosophy, epistemology and religions.</h2>
+      				<p><b>This article focuses not on formula and numbers, but a fascinating story where Bayes’theorem establishes itself across the most controversial discussions in philosophy, epistemology and religions.</b></p>
       				<p>We Data Scientists and Statisticians love Bayes’ theorem.</p>
       				<p>A seemingly simple idea: we get updated and improved belief by updating our initial belief with newly acquired information, Bayes’ theorem has been touted as one of the most powerful method for generating knowledge.</p>
-      				<div class = "w3-container w3-center"><img src="/img/sheldon.jpeg" alt="sheldon" style="width:60%" class = "w3-center">
+      				<div class = "w3-container w3-center"><img src="./img/sheldon.jpeg" alt="sheldon" style="width:60%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>Sheldon explaining how he is estimating his life expectancy, using Bayes’s theorem.</em> Image Source: Scientific America</p></div>
                     
  					<p>Alan Turing used Bayes to break Enigma — the Germany navy’s secret codes. We use Bayesian programs to whisk spam emails into junk bins (“Naive Bayes, anyone?”), assess our medical records, discovers how genes are controlled and regulated, assisted Coast guards and homeland security, etc.<a href = "#data_source" style = "text-decoration:none"><sup>[1]</sup></a> It is so popular that it even made a guest appearance on The Big Bang Theorem.</p>
 
-                    <p>Ok, I get it, nobody is talking about BMI here. Thinking about it, people may have a good point: given that I am slightly taller and have the exact same weight as an average Vietnamese male (a Wikipedia profile of 1m62 and 58kg), I may "look" a little skinnier. <strong>Look</strong> is the key word here. The logic is quite simple, isn't it? If you stretch yourself a little bit and have the same exact weight, you should look, well, leaner and skinnier. Nonetheless, this is actually serious scientific question to investigate further: How small I am (in weight) for a Vietnamese male of 1m69 in height?</p>
+                    <p>With such rich practical applications, it came as no surprise that philosophers and theologians have found Bayes’s Theorem a new framework to establish a novel theoretical underpinnings for a old, yet ever-inflammatory questions:</p>
 
+                    <h4 class="w3-text-teal">Can we make rational conclusions about God based on evidence about the world around us?</h4>
+                    <h3 class="w3-text-teal">1. Bayes’ theorem — A recap:</h3>
 
-      				<p>We need a methodological way to investigate into this topic. A good way to go forward is to find as much data of Vietnamese men's height and weight as possible and see where I stand among them.</p>
+      				<p>Bayes’ Theorem is stunningly simple. It is concerned with the conditional probability, that is, the probability that a theory or a hypothesis is true of some event has happened.</p>
+      				<p>The idea is captured in a (in)famous equation:</p>
 
-      				<p>After browsing through the web, I found out a survey research data that contains demographic information of more than 10,000 Vietnamese people. I limited the sample size to Male of the age group 18-29. This allows me to have a sample size of 383 Vietnamese males whose age are around 18-29, which is probably good enough for analysis.</p>
+      				$$P(X|Y) = \frac{P(X \cap Y)}{P(Y)} = \frac{P(Y|X)p(X)}{P(Y|X)P(X) + P(Y|X^C)P(X^C)}$$
+      				<p>I don’t want to waste your time laboring on this equations. In fact, I have written extensively about Bayes’ theorem and how to make inference the Bayesian way. You can check it out at:</p>
+      				<a href = "../skinny_asian_guy/skinny_asian_guy.html" style = "text-decoration:none"><sup>How Bayesian statistics convinced me to hit the gym</sup></a>
+
+      				<p>What I want to do next is to give a motivating example to demonstrate the vast predictive insights of this elegant formula.</p>
 
       				<p>At first, let's plot the data's weight and see how I would fit in among the young Vietnamese men.</p>
 

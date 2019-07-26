@@ -103,7 +103,7 @@
     			<div class="w3-container" style = "margin-top: 10px">
       				<h1 class="w3-text-teal">Finding the optimal dating strategy for 2019 with probability theory</h1>
       				<p><b>How knowing some Statistical theory may make finding Mr. Right slightly easier?</b></p>
-      				<div class = "w3-container w3-center"><img src="./img/pic1.jpeg" alt="love" style="width:60%" class = "w3-center">
+      				<div class = "w3-container w3-center"><img src="./img/pic1.jpeg" alt="love" style="width:60%" class = "w3-center"></div>
       				<p>Let me start with something most would agree: Dating is hard !!!</p>
 
       				<p><em>(If you don’t agree, that’s awesome!!! You probably don’t spend that much time reading and writing Medium posts like me T — T)</em></p>
@@ -141,7 +141,7 @@
 					<p>To formularize the strategy: you date \(M\) out of \(N\) people, reject all of them and immediately settle with the next person who is better than all you have seen so far. Our task is to find the optimal value of \(M\). As I said earlier, the optimal rule value of M is \(M = 0.37N\). But how do we get to this number?</p>
 
                 
-                	<h3> A small simulation:</h3>
+                	<h3>2. A small simulation:</h3>
                 	<p>I decide to run a small simulation in R to see if there’s an indication of an optimal value of M.</p>
 					<p>The set up is simple and the code is as follows:</p>
  
@@ -175,32 +175,50 @@ for (M in M_range){
 				<div class = "w3-container w3-center"><img src="./img/pic4.png" alt="rank" style="width:60%" class = "w3-center"></div>
  				
                 <p>So it seems that with \(N = 100\), the graph does indicate a value of M that would maximize the probability that we find the best partner using our strategy. The value is \(M = 35\) with a probability of 39.4%, quite close to the magic value I said earlier, which is \(M = 37\).</p>
-				<p>This simulated experiment also shows that the larger the value of \(N\) we consider, the closer we get to the magic number. Below is a graph that shows the optimal ratio \(\frac{M}/{N}\) as we increase the number of candidates we consider.</p>
+				<p>This simulated experiment also shows that the larger the value of \(N\) we consider, the closer we get to the magic number. Below is a graph that shows the optimal ratio \(\frac{M}{N}\) as we increase the number of candidates we consider.</p>
 				<div class = "w3-container w3-center"><img src="./img/pic5.png" alt="rank" style="width:60%" class = "w3-center"></div>
-				<p>There are some interesting observations here: as we increase the number of candidates \(N\) that we consider, not only does the optimal probability decreases and see to converge, so does the optimal ratio \(\frac{M}/{N}\). Later on, we will prove rigorously that the two optimal entities converge to the same value of roughly 0.37.</p>
+				<p>There are some interesting observations here: as we increase the number of candidates \(N\) that we consider, not only does the optimal probability decreases and see to converge, so does the optimal ratio \(\frac{M}{N}\). Later on, we will prove rigorously that the two optimal entities converge to the same value of roughly 0.37.</p>
 				<p>You may wonder: “Hang on a minute, won’t I achieve the highest probability of finding the best person at a very small value of \(N\)?” That’s partially right. Based on the simulation, at \(N = 3\), we can achieve the probability of success of up to 66% by simply choosing the third person every time. So does that mean we should always aim to date at most 3 people and settle on the third?</p>
 				<p>Well, you could. The problem is that this strategy will only maximize the chance of finding the best among these 3 people, which, for some cases, is enough. But most of us probably want to consider a wider range of option than the first 3 viable options that enter our life. This is essentially the same reason why we are encouraged to go on multiple dates when we are young: to find out the type of people we attract and are attracted to, to gain some good understanding of dating and living with a partner, and to learn more about ourselves along the process.</p>
 				<p>You may find more optimism in the fact that as we increase the range of our dating life with N, the optimal probability of finding Mr/Mrs. Perfect does not decay to zero. As long as we stick to our strategy, we can prove a threshold exists below which the optimal probability cannot fall. Our next task is to prove the optimality of our strategy and find that minimum threshold.</p>
 				<h4 class="w3-text-teal">Can we prove the 37% optimal rule rigorously?</h4>
-                    
-                    <p> Great, now we have 10,000 iterations of the parameter space \(\theta\), what do we do now? Remember that by <a href = "#equation_1" style = "text-decoration:none">equation (1)</a>:</p>
-                    $$\mu = \beta_0 + \beta_1x$$
 
-                 <p> This means that if we substitute \(x = 168cm\) to each of the iteration, we will find 10,000 values of weight and thus, the <em>distribution</em> of weights <strong>given that</strong> the height is 168cm.
+				<h3>3. The actual math:</h3>
+				<p>Let \(O_{best}\) be the arrival order of the best candidate (Mr/Mrs. Perfect, The One, X, the candidate whose rank is 1, etc.) We do not know when this person will arrive in our life, but we know for sure that out of the next, pre-determined \(N\) people we will see, \(X\) will arrive at order \(O_{best} = i\).</p>
+				<p>Let \(S_{n,k})\) be the event of success in choosing \(X\) among \(N\) candidates with our strategy for \(M = k\), that is, exploring and categorically rejecting the first \(k-1\) candidates, then settling with the first person whose rank is better than all you have seen so far. We can see that:</p>
+				$$P(S_{n,k}|O_{best} = i) = \begin{cases} 
+      0 & i\in \{1,2,3..., k-1\} \\
+      \frac{k-1}{i-1} & i\in \{k, k+1, ..., n\}
+   \end{cases}$$
 
-                 <pre> <code class="r"> cmean <- sample_data$a + sample_data$b*168 </code></pre>
+   				<p>Why is it the case? It is obvious that if \(X\) is among the first \(k-1\) people who enter our life, then no matter who we choose afterward, we cannot possibly pick \(X\) (as we include \(X\) in those who we categorically reject). Otherwise, in the second case, we notice that our strategy can only succeed if one of the first \(k-1\) people is the best among the first \(i-1\) people.</p>
+   				<p>The visual lines below will help clarify the 2 scenarios above:</p>
+				<div class = "w3-container w3-center"><img src="./img/pic6.png" alt="scenrios" style="width:60%" class = "w3-center"></div>
+				<p>Then, we can use the Law of Total Probability to find the marginal probability of success \(P(S_{n,k})\)</p>
+				$$\begin{array} {lcl} P(S_{n,k}) & = & \sum_{i=1}^{n} P(S_{n,k}|O_{best} = i) \times P(O_{best} = i)\\ 
+[10pt] &=& \sum_{i=1}^{k-1} 0 \times P(O_{best} = i) + \sum_{i=k}^{n} \frac{k-1}{i-1} \times P(O_{best} = i)\\
+[10pt] &=& \sum_{i=k}^{n} \frac{k-1}{i-1} \times \frac{1}{n}\\
+[10pt] &=& \frac{k-1}{n} \sum_{i=k}^{n} \frac{1}{i-1}\end{array}$$ 
 
-                 <p> We are interested in the percentile of my weight, conditional on my height. For any quantity that can be calculated as a function of the parameters we have monitored in the MCMC, we can get a sample from the posterior distribution for that quantity simply by taking that function of the parameters in our MCMC. We’ll do that for the desired percentile here.</p> 
-                  <pre> <code class="r"> m_perc <- pnorm(q = m_weight, mean = cmean, sd = sample_data$sig) 
- truehist(m_perc)  </code></pre>
+				<p>In summary, we arrive at the general formula for the probability of success as follows:</p>
+				$$P(S_{n,k}) = \begin{cases} 
+      1 & k = 1 \\
+      \frac{k-1}{n}\sum_{i=k}^{n}\frac{1}{i-1} & k\in \{2, 3, 4, ..., n\}
+   \end{cases}$$
 
-                <div class = "w3-container w3-center"> <img src="./img/post_weight.png" alt="post_percentile" style="width:80%" class = "w3-center"></div>
- 				<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>Oophs!!! I will not even be in the range.</em></p>
-                <p> For example, we can find the percentile that my weight is in the first 40 percentile or less</p>
-                 <pre> <code class="r"> mean(m_perc <= 0.4)
- #  [1]  0.994  </code></pre>
-			    <p> So there is overwhelming evidence that conditional on my height of 168cm, my weight 58kg would leave me at the lower percentile of the Vietnamese population. Much as I hesitate to admit, I am indeed very skinny for somebody of 168cm in height. It's really about time to hit the gym and gain some weights. After all, if you cannot trust some well done Bayesian statistics result, what else can you trust?</p>
-                <p> Update: I have included in the data source a dataset that that contains the height and weight of 8169 male and female youth in America (National Longitudinal survey 1997<a href = "#data_source_2" style = "text-decoration:none"><sup>2</sup></a>), could you conduct the same analysis and see where you stand?</p>
+   				<p>We can plug \(n = 100\) and overlay this line on top of our simulated results to compare:</p>
+   				<div class = "w3-container w3-center"><img src="./img/pic7.png" alt="cal1" style="width:80%" class = "w3-center">
+ 				<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">Our theoretical results align perfectly well with the simulated experiment. The theoretical result yields a maximum probability of 37.1% at \(M = 37\)</p></div>
+ 				<p>I don’t want to bore you with more Maths but basically, as n gets very large, we can write our expression for \(P(S_{n,k})\) as a Riemann sum and simplify as follows:</p>
+ 				$$P(S_{n,k}) \longrightarrow x\int_{x}^{1} \frac{1}{t} dt = -x\text{ln}(x) $$
+ 				<p>where \(x= \frac{k}{n}\)</p>
+ 				The final step is to find the value of \(x\) that maximizes this expression. Here comes some high school calculus:
+ 				$$\frac{d}{dx}(-x\text{ln}(x)) = -\text{ln}(x) - 1$$
+ 				<p>This derivative has value 0 when \(\text{ln}(x) = -1\) or \(x=e^{-1} \approx 0.3678\)</p>
+ 				$$\frac{d}{dx}(-x\text{ln}(x)) = -\text{ln}(x) - 1$$
+ 				<p>Moreover, at \(x=e^{-1}\):</p>
+ 				$$P(S_{n,k}) = -x\text{ln}(x) = e^{-1} \approx 0.3678$$
+ 				<p>We just rigorously proved the 37% optimal dating strategy.</p>
                 <hr>
                 <p> The entire Python script for this article can be found at my <a href = "https://github.com/tuangauss/Various-projects/blob/master/R/bayesian_gym.R">Github page</a>.</p>
                 <hr>

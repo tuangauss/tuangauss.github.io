@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>How R and Bayesian statistics convince me to finally hit the gym</title>
+		<title>Finding the optimal dating strategy</title>
 		<meta charset = "UTF-8">
 		<meta name = "viewport" content = "width = device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -101,162 +101,87 @@
 		<div class = "w3-main" style = "margin-left:250px">
 			<div class="w3-row w3-padding-64">
     			<div class="w3-container" style = "margin-top: 10px">
-      				<h1 class="w3-text-teal">The story of the tiny Asian man - How Bayesian statistics convince me to finally hit the gym</h1>
-      				<blockquote>"You need to eat more! For a person of your height, you look really skinny"<br>
-                    "Dude! Hit the gymn and your physique will get a lot better"</blockquote>
+      				<h1 class="w3-text-teal">Finding the optimal dating strategy for 2019 with probability theory</h1>
+      				<p><b>How knowing some Statistical theory may make finding Mr. Right slightly easier?</b></p>
+      				<div class = "w3-container w3-center"><img src="./img/pic1.jpeg" alt="love" style="width:60%" class = "w3-center">
+      				<p>Let me start with something most would agree: Dating is hard !!!</p>
 
-      				<p>From high school to college, I often heard people making fun of how small I look, how underweight I must be and how I should do exercise, hit the gym and gain weight in order to have "a nicer physique". I often took these comments with a pinch of salt. For somebody who is 1m69 (5'6) in height and 58kg (127lb) in weight, I have close-to-perfect BMI index (20.3).</p>
-      				<div class = "w3-container w3-center"><img src="http://clipart-library.com/data_images/187613.gif" alt="skinny-guy" style="width:60%" class = "w3-center">
- 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>I don't look quite like this but you get the idea.</em> Image source: Clip Art Library</p></div>
-                    
-                    <blockquote>"No dude! We are talking about the physique"</blockquote>
+      				<p><em>(If you don’t agree, that’s awesome!!! You probably don’t spend that much time reading and writing Medium posts like me T — T)</em></p>
 
-                    <p>Ok, I get it, nobody is talking about BMI here. Thinking about it, people may have a good point: given that I am slightly taller and have the exact same weight as an average Vietnamese male (a Wikipedia profile of 1m62 and 58kg), I may "look" a little skinnier. <strong>Look</strong> is the key word here. The logic is quite simple, isn't it? If you stretch yourself a little bit and have the same exact weight, you should look, well, leaner and skinnier. Nonetheless, this is actually serious scientific question to investigate further: How small I am (in weight) for a Vietnamese male of 1m69 in height?</p>
-
-
-      				<p>We need a methodological way to investigate into this topic. A good way to go forward is to find as much data of Vietnamese men's height and weight as possible and see where I stand among them.</p>
-
-      				<p>After browsing through the web, I found out a survey research data<a href = "#data_source" style = "text-decoration:none"><sup>1</sup></a> that contains demographic information of more than 10,000 Vietnamese people. I limited the sample size to Male of the age group 18-29. This allows me to have a sample size of 383 Vietnamese males whose age are around 18-29, which is probably good enough for analysis.</p>
-
-      				<p>At first, let's plot the data's weight and see how I would fit in among the young Vietnamese men.</p>
-
-      				<div class = "w3-container w3-center"><img src="./img/weight_density.png" alt="weight_density" style="width:80%" class = "w3-center">
- 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>The red line shows the median of the sample while the orange line shows the mean</em></p></div>
-
-      				<p>This plot suggests that I am slightly below both the average and median weights of those 383 Vietnamese young men. Encouraging news? However, the question is not really about how my weight compares to those in this sample per se, but <em><strong>given the height of 1m68</strong></em> what can we infer about my weight compared to the <strong>entire Vietnamese population</strong>, assuming that the Vietnamese male population is well-represented by these 383 individuals? To do this, we need to dive into a regression analysis.</p>
-
-      				<p> At first, let's plot a 2-dimensional scatter plot of heights and weights</p>
-                    
-                    <div class = "w3-container w3-center"><img src="./img/weight_vs_height.png" alt="weightvsheight" style="width:80%" class = "w3-center"></div>
+      				<p>Nowadays, we spend countless hours every week clicking through profiles and messaging people we find attractive on Tinder or Subtle Asian Dating.</p>
+      				<p>And when you finally ‘get it’, you know how to take the perfect selfies for your Tinder’s profile and you have no trouble inviting that cute girl in your Korean class to dinner, you would think that it shouldn’t be hard to find Mr/Mrs. Perfect to settle down. Nope!!! Many of us just can’t find the right match.</p>
  					
  					<p>Well, I just look, average. In actual fact, if we only look at the data of those who are 168cm in height (imagine a verticle line that goes at 168cm and passes through the red point), I sort of weight a little bit less than these people.</p>
  					<p> Another important observation is that the plot suggest a positive linear relationship between the height and weight of Vietnamese male. We will do a quantitative analysis to get to the bottom of this relationship.</p>
+ 					<p><em>Dating is far too complex, scary and difficult for mere mortals !!!</em></p>
+ 					<div class = "w3-container w3-center"><img src="./img/pic2.jpeg" alt="mobile" style="width:60%" class = "w3-center">
+ 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>Do social media and online dating apps make it easier to find The One?</em> Image Source: Dispatch Weekly</p></div>
+					<p>Are our expectations too high? Are we too selfish? Or we simply destined to not meeting The One? Don’t worry! It’s not your fault. <b>You just have not done your math.</b></p>
+					<h4 class="w3-text-teal">How many people should you date before you start settling for something a bit more serious?</h4>
 
-					<p>First, let's quickly add a "standard least square" line. I will say more about this line later and just show it for now. </p>
+                    <p>It’s a tricky question, so we have to turn to the mathematics and statisticians. And they have an answer: <b>37%</b>.</p>
 
-					<div class = "w3-container w3-center"><img src="./img/regression_line.png" alt="line_regress" style="width:80%"></div>
-					<p>We could interpret our least-squares line \(y = -86.32+0.889x\) as suggesting that the usual profile of a Vietnamese male at my age is such that an increase in 1 cm of height would observe an increase in weight of 0.88kg.</p>
-
-                    <p>However, this does not answer our question; that is, given somebody of my height (1m68), is 58kg considered too much, too little or just about average? To rephrase this question in a more quantitative manner, if we have a distribution of all of those who are 1m68 in height, what is the chance of my weight falls into the 25,50 or 75-percentile? To do this, let's dig deeper and try to understand the theory behind Regression.</p>
-
-					<h3>The theory of Linear Regression:</h3>
+					<p>What does that mean?</p>
                     
-                    <p>In a linear regression model, the expected value of the \(Y\) variable (in our case, the weight) is a linear function of \(x\) (height). Let’s call the intercept and slope of this linear relationship \(\beta_0\) and \(\beta_1\); that is, we assume that \(E(Y | X = x) = \beta_0 + \beta_1x\). We do not know \(\beta_0\) and \(\beta_1\) so we treat these as unknown parameters.</p>
+                    <p>It means out of all the people you could possibly date, let’s say you foresee yourself dating 100 people in the next 10 years (more like 10 for me but that’s another discussion), you should see about the first 37% or 37 people, and then settle for the <b>first person</b> after that who’s <b>better than the ones you saw before</b> (or wait for the very last one if such a person doesn’t turn up)</p>
+					<p>How do they get to this number? Let’s dig up some Math.</p>
                     
-                    <p>In the most standard linear regression model, we further assume that the conditional distribution of \(Y\) given \(X = x\) is Normal.</p>
-					<p>This means that simple linear regression model:</p>
-                    $$Y = \beta_0 +\beta_1x + \epsilon$$
-                    <p id = "equation_1"> can be rewritten as: </p>
-                    \begin{equation}
-                    \mu_i = \beta_0 + \beta_1x_i
-                    \end{equation}
-                    $$y_i \sim N(\mu_i, \sigma)$$
-				    <p><em>Note that in many models, we can replace <strong>variance</strong> parameter \(\sigma\) with <strong>precision</strong> parameter \(\tau\), where \(\tau = 1/\sigma\).</em></p>
+                    <h3>1. The naive (or the desperate) approach:</h3>
+                    <p>Let’s say we foresee \(N\) potential people who will come to our life sequentially and they are ranked according to some ‘matching/best-partner statistics’. Of course, you want to end up with the person who ranks 1st — let’s call this person \(X\).</p>
+                    <p>Before we explore the optimal dating policy, let’s start with a simple approach. What if you are so desperate to get matched on Tinder or to get dates that you decide to settle/marry the first person that comes along? What is the chance of this person being \(X\)?</p>
+                    <div class = "w3-container w3-center"><img src="./img/pic3.png" alt="rank" style="width:60%" class = "w3-center">
+ 					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px">If you can rank these N people. How can you find \(X\)?</p></div>
+ 					<p>Well, it's \(\frac{1}{N}\)</p>
 
-                    <p><strong>To summarize:</strong> dependent variable \(Y\) follows normal distribution parametrized by mean \(\mu_i\), that is a linear function of \(X\) parametrized by \(\beta_0\),\(\beta_1\), and by precision parameter \(\tau\).
-
-
-					<p> Finally, it only remains to say what we are assuming about the variance/precision. In particular, we are assuming the unknown variance does not depend on \(x\); this assumption is called <strong>homoscedasticity</strong>.
+					<p> And as \(N\) gets larger the larger timeframe we consider, this probability will tend to <b>zero</b>. Alright, you probably will not date 10,000 people in 20 years but even the small odds of 1/100 is enough to make me feel that this is not a great dating policy.</p>
                 
-                	<p> That's a lot, but you can visualize what I have discussed with this photo </p>
+                	<h4 class="w3-text-teal">So what should we do?</h4>
+                	<p>We do what people actually do in dating. That is, instead of committing to the first option that comes along, we want to meet a couple of potential partners, explore the quality of our dating fields and start to settle down. So there’s an exploring part and a settling-down part to this dating game.</p>
+					<h4 class="w3-text-teal">But how long should we explore and wait?</h4>
+					<p>To formularize the strategy: you date \(M\) out of \(N\) people, reject all of them and immediately settle with the next person who is better than all you have seen so far. Our task is to find the optimal value of \(M\). As I said earlier, the optimal rule value of M is \(M = 0.37N\). But how do we get to this number?</p>
 
-                	<div class = "w3-container w3-center"><img src="./img/linear_model.PNG" alt="linear_model" style="width:60%" class = "w3-center"></div>
-
- 					<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>In an actual data analysis problem, all we are given is the black dots—the data. Using the data, our goal is to make inferences about the things we don’t know including \(\beta_0\) and \(\beta_1\) (which determine the shadowy, mysterious, blue dotted line) and \(\sigma\) (which determines the width of the red Normal densities from which the \(y\) data values are drawn).</em>Image source: Joseph Change's Yale S&DS 238 course.</p>
-
-					<h3> Estimating parameters </h3>
-                	<p>Now, there are a couple of ways you can do to estimate \(\beta_0\) and \(\beta_1\).If you estimate such model using <strong>ordinary least squares</strong>, you do not have to worry about the probabilistic formulation, because you are searching for optimal values of \(\beta_0\) and \(\beta_1\) by minimizing the squared errors of fitted values to predicted values. On another hand, you could estimate such model using <strong>maximum likelihood estimation</strong>, where you would be looking for optimal values of parameters by maximizing the likelihood function</p>
-				$$\mathop{\arg\,\max}\limits_{\beta_0, \beta_1, \tau} = \prod_{i=1}^{n} N(y_i;\beta_0 + \beta_1x_i, \tau) $$
                 
-                	<p id ="equation_2"><em>Note</em>: an interesting result (not demonstrated mathematically here) is that if we make the further assumption that the errors belong to a normal distribution the least squares estimators are also the maximum likelihood estimators.</p>
-                
-                	<h3> Linear Regression with a Bayesian touch: </h3>
+                	<h3> A small simulation:</h3>
+                	<p>I decide to run a small simulation in R to see if there’s an indication of an optimal value of M.</p>
+					<p>The set up is simple and the code is as follows:</p>
+ 
+                <pre><code class ="r"> # a util function to simulate the 'best-partner rank'
+perm_rank <- function(){
+  return (sample(1:100, 100))
+}
 
-                	<p>The Bayesian approach, instead of maximizing the likelihood function alone, would assume prior distributions for the parameters and use Bayes theorem:</p>
-         
-         			$$posterior \propto prior\times likelihood$$
-                
-                	<p id ="equation_3">The likelihood function is the same as above, but what changes is that you assume some prior distributions for the estimated parameters \(\beta_0\), \(\beta_1\), \(\tau\) and include them into the equation:</p>
-                
-                \begin{equation}
-                f(\beta_0, \beta_1, \tau) \propto \prod_{i=1}^{n}N(y_i;\beta_0 + \beta_1x_i, \tau)f_{\beta_0}(\beta_0)f_{\beta_1}(\beta_1)f_{\tau}(\tau)
-                \end{equation}
+#for each value of M, we simulate 1000 times
+M_range <- 2:100, niter <- 1000
+# declare a vector to store results, notice that if M = 1, the probability is 1/100
+prob_result <- rep(1/100, 100)
 
-                <p>Now, this prior business feels kind of strange. The truth is, there is a very strong philosophical reasoning as to why we could assign an unknown parameters (in our case \(\beta_0\), \(\beta_1\), \(\tau\) ) with some seemingly arbitrary distributions. These prior distributions are meant to capture our beliefs about the situation before seeing the data. After observing some data, we apply Bayes' Rule to obtain a posterior distribution for these unknowns, which takes account of both the prior and the data. From this posterior distribution we can compute predictive distributions for future observations.</p>
-
-                <p>The final estimate will depend on the information that comes from your data and from your priors, but the more information is contained in your data, the less influential are priors.</p>
-
-                <p>"What distributions?" is a different question, since there is unlimited number of choices. There is (in theory) just one correct prior, the one that captures your (subjective) prior beliefs. However, in practice, the choice of the prior distribution can be rather subjective and sometimes, arbitrary. We could just choose a Normal prior with a large standard deviation (small precision); for example, we could assume \(\beta_0\) and \(\beta_1\) come from a Normal distribution with mean 0 and SD 10,000 (precision = \(1 \times 10^{-5}\)) or whatever. This is called an uninformative prior because the distribution will be rather flat (that is, it assign almost equal distribution to any value in a particular range). What follows is that if this type of distribution is our choice, we do not need to worry about which distribution among spread-out distributions might be better because they are all nearly flat in the region where the likelihood is non-negligible, and the posterior distribution doesn’t care what the prior distribution looks like in regions where the likelihood is negligible.</p>
-                <p>Similarly, for the precision \(\tau\), we know these must be nonnegative so it makes sense to choose a distribution restricted to nonnegative values– for example, we could use an Gamma distribution with low shape and scale paraeter. </p>
-
-                <p>Another useful uninformative choice is the uniform distribution. If you choose a uniform distribution for \(\sigma\) or \(\tau\), you may end up with a model that is illustrated by John K. Kruschke</p>
-                <div class = "w3-container w3-center"><img src="./img/john_model.jpg" alt="regression_theory" style="width:60%" class = "w3-center"></div>
- 				<p class = "w3-center" style = "margin-bottom: 15px; font-size:15px"><em>John K. Kruschke's illustrated model.</em> Image source: Indiana University.</p>
-                
-                <h3> JAGS </h3>
-                <p>So far so good for the theory. The issue is that while solving <a href = "#equation_2" style = "text-decoration:none">equation (2)</a> is most of the time achievable with derivative optimization, solving <a href = "#equation_3" style = "text-decoration:none">equation (3)</a> is mathematically more challenging . In vast majority of cases posterior distribution will not be directly available (see how complicated Normal and Gamma distribution is and you have to MULTIPLY a series of those together). Markov Chain Monte Carlo methods is often used for estimating the parameters of the model. JAGS helps us does exactly that.</p>
-                
-                <p> The idea behind JAGS model is that a simulation process based on Markov Chain Monte Carlo will generate many iterations of parameter space \(\theta = (\beta_0; \beta_1; \tau)\). The distribution of the sample generated for each parameter in this parameter space will approximate (proven mathematically) the population distribution of the parameter.</p>
-                
-                <p> We run JAGs in R as follows </p>
-                <p> - At first, we write our model in text format:</p>
-                <pre><code class ="r"> n <- 383 #number of observation
-
- mymodel <- "
- model{
-  for(i in 1:n){
-    # set up our model
-    y[i] ~ dnorm(a + b*x[i], tau)
+# do a simulation for each value of M
+for (M in M_range){
+  result <- rep(0, niter)
+  for (i in 1:niter){
+    order <- perm_rank() #simulate the order
+    highest_reject <- min(head(order, M-1)) # find the best among the first M-1 that gets rejected
+    if (highest_reject != 1){
+      accept <- order[order < highest_reject][1]
+      # we consider ourselves successful if:
+      # - rank 1 is not included in the first M-1 candidates
+      # - rank 1 is the first person who is better than all we have seen
+      if (accept == 1) result[i] <- 1 
+      } 
   }
-  # state our prior distribution
-  # JAGs requires that we use precision
-  # not variance in linear model
-  a ~ dnorm(0, 1e-6)
-  b ~ dnorm(0, 1e-6)
-  tau ~ dgamma(.01,.01)
-  }"</code></pre>
-				<p> Then, we command JAGs to conduct the simulation. Here I ask JAGs to simulate the value for the parameter space \(\theta\) 10000 times.</p>
-                
-               	<pre><code class="r"> jm <- jags.model(file = textConnection(mymodel), data=list(n=n, x=data$height, y=data$weight))
- cs <- coda.samples(jm, c("a","b","tau"), 10000)
- sample_data <- as.data.frame(cs[[1]])</code></pre>
+  prob_result[M] <- mean(result)
+}</code></pre>
+				<p>We can plot our simulated results for basic visualization:</p>
+				<div class = "w3-container w3-center"><img src="./img/pic4.png" alt="rank" style="width:60%" class = "w3-center"></div>
  				
-                <p> After such sampling, we achieve the sampled data of \(\theta = (\beta_0; \beta_1; \tau)\) such as this</p>
-
-					<table class="w3-table w3-bordered w3-striped w3-border test w3-hoverable">
-						<tbody><tr class="w3-blue">
-					  		<th></th>
-					  		<th>\(\beta_0\)</th>
-					  		<th>\(\beta_1\)</th>
-					  		<th>\(\tau\)</th>
-						</tr></tbody>
-						<tbody>
-							<tr>
-					  			<td>1</td>
-					  			<td>-66.30087</td>
-					  			<td>0.7654910</td>
-					  			<td>0.01500597</td>
-							</tr>
-							<tr>
-					  			<td>2</td>
-					  			<td>-66.97430</td>
-					  			<td>0.7623432</td>
-					  			<td>0.01610994</td>
-							</tr>
-							<tr>
-					  			<td>3</td>
-					  			<td>-66.88992</td>
-					  			<td>0.7537466</td>
-					  			<td>0.01793836</td>
-							</tr>
-							<tr>
-                            	<td>4</td>
-					  			<td>-66.09944</td>
-					  			<td>0.7537466</td>
-					  			<td>0.01644814</td>
-							</tr>
-						</tbody>
-					</table>
+                <p>So it seems that with \(N = 100\), the graph does indicate a value of M that would maximize the probability that we find the best partner using our strategy. The value is \(M = 35\) with a probability of 39.4%, quite close to the magic value I said earlier, which is \(M = 37\).</p>
+				<p>This simulated experiment also shows that the larger the value of \(N\) we consider, the closer we get to the magic number. Below is a graph that shows the optimal ratio \(\frac{M}/{N}\) as we increase the number of candidates we consider.</p>
+				<div class = "w3-container w3-center"><img src="./img/pic5.png" alt="rank" style="width:60%" class = "w3-center"></div>
+				<p>There are some interesting observations here: as we increase the number of candidates \(N\) that we consider, not only does the optimal probability decreases and see to converge, so does the optimal ratio \(\frac{M}/{N}\). Later on, we will prove rigorously that the two optimal entities converge to the same value of roughly 0.37.</p>
+				<p>You may wonder: “Hang on a minute, won’t I achieve the highest probability of finding the best person at a very small value of \(N\)?” That’s partially right. Based on the simulation, at \(N = 3\), we can achieve the probability of success of up to 66% by simply choosing the third person every time. So does that mean we should always aim to date at most 3 people and settle on the third?</p>
+				<p>Well, you could. The problem is that this strategy will only maximize the chance of finding the best among these 3 people, which, for some cases, is enough. But most of us probably want to consider a wider range of option than the first 3 viable options that enter our life. This is essentially the same reason why we are encouraged to go on multiple dates when we are young: to find out the type of people we attract and are attracted to, to gain some good understanding of dating and living with a partner, and to learn more about ourselves along the process.</p>
+				<p>You may find more optimism in the fact that as we increase the range of our dating life with N, the optimal probability of finding Mr/Mrs. Perfect does not decay to zero. As long as we stick to our strategy, we can prove a threshold exists below which the optimal probability cannot fall. Our next task is to prove the optimality of our strategy and find that minimum threshold.</p>
+				<h4 class="w3-text-teal">Can we prove the 37% optimal rule rigorously?</h4>
                     
                     <p> Great, now we have 10,000 iterations of the parameter space \(\theta\), what do we do now? Remember that by <a href = "#equation_1" style = "text-decoration:none">equation (1)</a>:</p>
                     $$\mu = \beta_0 + \beta_1x$$

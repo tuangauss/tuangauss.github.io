@@ -196,9 +196,9 @@ for (M in M_range){
 				<div class = "w3-container w3-center"><img src="./img/pic6.png" alt="scenrios" style="width:60%" class = "w3-center"></div>
 				<p>Then, we can use the Law of Total Probability to find the marginal probability of success \(P(S_{n,k})\)</p>
 				$$\begin{array} {lcl} P(S_{n,k}) & = & \sum_{i=1}^{n} P(S_{n,k}|O_{best} = i) \times P(O_{best} = i)\\ 
-[10pt] &=& \sum_{i=1}^{k-1} 0 \times P(O_{best} = i) + \sum_{i=k}^{n} \frac{k-1}{i-1} \times P(O_{best} = i)\\
-[10pt] &=& \sum_{i=k}^{n} \frac{k-1}{i-1} \times \frac{1}{n}\\
-[10pt] &=& \frac{k-1}{n} \sum_{i=k}^{n} \frac{1}{i-1}\end{array}$$ 
+				&=& \sum_{i=1}^{k-1} 0 \times P(O_{best} = i) + \sum_{i=k}^{n} \frac{k-1}{i-1} \times P(O_{best} = i)\\
+				&=& \sum_{i=k}^{n} \frac{k-1}{i-1} \times \frac{1}{n}\\
+				&=& \frac{k-1}{n} \sum_{i=k}^{n} \frac{1}{i-1}\end{array}$$ 
 
 				<p>In summary, we arrive at the general formula for the probability of success as follows:</p>
 				$$P(S_{n,k}) = \begin{cases} 
@@ -212,18 +212,26 @@ for (M in M_range){
  				<p>I don’t want to bore you with more Maths but basically, as n gets very large, we can write our expression for \(P(S_{n,k})\) as a Riemann sum and simplify as follows:</p>
  				$$P(S_{n,k}) \longrightarrow x\int_{x}^{1} \frac{1}{t} dt = -x\text{ln}(x) $$
  				<p>where \(x= \frac{k}{n}\)</p>
- 				The final step is to find the value of \(x\) that maximizes this expression. Here comes some high school calculus:
+ 				<p>The final step is to find the value of \(x\) that maximizes this expression. Here comes some high school calculus:</p>
  				$$\frac{d}{dx}(-x\text{ln}(x)) = -\text{ln}(x) - 1$$
  				<p>This derivative has value 0 when \(\text{ln}(x) = -1\) or \(x=e^{-1} \approx 0.3678\)</p>
  				$$\frac{d}{dx}(-x\text{ln}(x)) = -\text{ln}(x) - 1$$
  				<p>Moreover, at \(x=e^{-1}\):</p>
  				$$P(S_{n,k}) = -x\text{ln}(x) = e^{-1} \approx 0.3678$$
  				<p>We just rigorously proved the 37% optimal dating strategy.</p>
+
+ 				<h3>4. The final words:</h3>
+ 				<p>So what’s the final punchline? Should you use this strategy to find your lifelong partner? Does it mean you should swipe left on the first 37 attractive profiles on Tinder before or put the 37 guys who slide into your DMs on ‘seen’?</p>
+ 				<p>Well, It’s up to you to decide.</p>
+ 				<p>The model provides the optimal solution <b>assuming</b> that you set strict dating rules for yourself: you have to set a specific number of candidates \(N\), you have to come up with a ranking system that guarantees no tie (The idea of ranking people does not sit well with many), and once you reject somebody, you never consider them viable dating option again.</p>
+ 				<p>Obviously, real-life dating is a lot messier.</p>
+ 				<p>Sadly, not everybody is there for you to accept or reject — \(X\), when you meet them, might actually reject you! In real-life people do sometimes go back to someone they have previously rejected, which our model doesn’t allow. It’s hard to compare people on the basis of a date, let alone coming up with a statistic that effectively predicts how great a potential spouse a person would be and rank them accordingly. And we haven’t addressed the biggest problem of them all: that it’s merely impossible to estimate the total number of viable dating options \(N\). If I imagine myself spending most of my time chunking codes and writing Medium article about dating in 20 years, how vibrant my social life will be? Will I ever get close to dating 10, 50 or 100 people?</p>
+
+ 				<p>Another interesting spin-off is to consider what the optimal strategy would be if you believe that <em>the best option will never be available to you</em>, under which circumstance you try to maximize the chance that you end up with at least the <em>second-best, third-best, etc</em>. These considerations belong to a general problem called ‘the postdoc problem’, which has a similar set-up to our dating problem and assume that the best student will go to Harvard (Yale, duh!!!) <a href = "#data_source" style = "text-decoration:none"><sup>[1]</sup></a></p>
                 <hr>
-                <p> The entire Python script for this article can be found at my <a href = "https://github.com/tuangauss/Various-projects/blob/master/R/bayesian_gym.R">Github page</a>.</p>
+                <p> The entire Python script for this article can be found at my <a href = "https://github.com/tuangauss/Various-projects/blob/master/R/dating_sim.R">Github page</a>.</p>
                 <hr>
-                <p id = "data_source" style = "font-size: 18px"><em>Data Source: Vuong Q. H.. Open Science Framework. 2017 https://doi.org/10.17605/OSF.IO/AFZ2W</em></p>
-                <p id = "data_source_2" style = "font-size: 18px"><em>Data Source: National Longitudinal Surveys | Bureau of Labor Statistics 1997 https://www.nlsinfo.org/investigator/pages/search.jsp?s=NLSY97</em></p>
+                <p id = "data_source" style = "font-size: 18px">[1] Robert J. Vanderbei (1980). <em>The Optimal Choice of a Subset of a Population</em>. Mathematics of Operations Research. 5 (4): 481–486 </p>
     			</div>
     		</div>
 

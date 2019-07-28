@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Tuan Nguyen's blog </title>
+		<meta charset = "UTF-8">
+		<meta name = "viewport" content = "width = device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script>
+		// Script to open and close sidebar
+		function w3_open(){
+			document.getElementById("mySideBar").style.display = "block";
+			document.getElementById("myOverlay").style.display = "block";
+		}
+
+		function w3_close(){
+			document.getElementById("mySideBar").style.display = "none";
+			document.getElementById("myOverlay").style.display = "none";		
+		}
+		</script>
+		<style>
+		.w3-sidebar a {font-family: "Roboto", sans-serif}
+		body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
+		</style>
+	</head>
+	<body class = "w3-content" style = "max-width:1200px" data-gr-c-s-loaded = "true">
+		<!-- Sidebar/menu -->
+		<nav class = "w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style = "z-index:3; width:250px; display: none;" id="mySideBar">
+			<div class = "w3-container w3-display-container w3-padding-16">
+
+				<i onclick = "w3_close()" class = "fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
+				<h3 class = "w3-wide">
+					<a href = "#" style = "text-decoration:none"><b>Main</b></a>
+				</h3>
+
+			</div>
+
+			<div class = "w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
+				<a href="/statistics.html" class="w3-bar-item w3-button">Statistics</a>
+				<a href="/machine_learning.html" class="w3-bar-item w3-button">Machine Learning</a>
+				<a href="#" class="w3-bar-item w3-button">Deep Learning</a>
+			</div>
+			<a href = "/resume.html" class = "w3-bar-item w3-button w3-padding">Resume</a>
+			<a href = "#footer" class = "w3-bar-item w3-button w3-padding">Contact</a>
+		</nav>
+		<!-- Top menu on small screens -->
+		<header class="w3-bar w3-top w3-hide-large w3-black w3-xlarge">
+		  <div class="w3-bar-item w3-padding-24 w3-wide">Main</div>
+		  <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-24 w3-right" onclick="w3_open()">
+		  	<i class="fa fa-bars"></i>
+		  </a>
+		</header>
+
+		<!-- Overlay effect when opening sidebar on small screens -->
+		<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor: pointer; display: none;" title="close side menu" id="myOverlay"></div>
+
+		<!-- Main contant: when side bar is visible, shift to the right by 250px -->
+		<div class = "w3-main" style = "margin-left:250px">
+			<div class="w3-row w3-padding-64">
+    			<div class="w3-twothird w3-container" style = "margin-top: 10px">
+      				<h1 class="w3-text-teal"><a href="/bayes_god/bayes_god.html" style = "text-decoration:none">A Bayesian quest to find God</a></h1>
+      				<p> Bayes’ theorem and the probabilistic answers to the most fundamental question of all: “Does God exist?”. Not focusing on formula and numbers, the article tells a fascinating story where Bayes’theorem establishes itself across the most controversial discussions in philosophy, epistemology and religions.<a href="/bayes_god/bayes_god.html" style = "text-decoration:none; font-weight: bold"> Read more...</a></p>
+    			</div>
+
+    			<!-- About card -->
+                <div class="w3-third w3-container" style = "margin-top:10px">
+                  <div class="w3-card w3-margin w3-margin-top">
+                      <img src="/img/cover_photo.jpg" alt = "cover-photo" style="width:100%">
+                      <div class="w3-container w3-white">
+                          <h4><b>Tuan Nguyen</b></h4>
+                          <p style = "font-size: 13px">I am a Yale graduate with a degree in Statistics and Data Science. I am currently working as a Data Scientist at Quora</p>
+                      </div>
+                  </div>
+                </div>		
+    		</div>
+    		<!-- Second summary -->
+			<div class="w3-row">
+	    		<div class="w3-twothird w3-container">
+	      			<h1 class="w3-text-teal"><a href="/skinny_asian_guy/skinny_asian_guy.html" style = "text-decoration:none">How Bayesian statistics convinced me to hit the gym</a></h1>
+      				<p> A fun statistical investigation of my physical aesthetics, (or lack thereof) using statistical inference with a Bayesian approach. Introduction to regression, linear models, parameter estimations and more. Calculations, simulations and analysis of data are conducted in R computing language.<a href="/skinny_asian_guy/skinny_asian_guy.html" style = "text-decoration:none; font-weight: bold"> Read more...</a></p>
+	    		</div>
+    			<!-- Popular post -->
+                <div class="w3-third w3-container">
+                	<div class="w3-card w3-margin">
+					    <div class="w3-container w3-padding">
+					      <h4>Popular Posts</h4>
+					    </div>
+					    <ul class="w3-ul w3-hoverable w3-white">
+					      <li class="w3-padding-16">
+					        <a href= "full_data_science_project/full_data_science_project_with_R(part_1).html"><img src="/full_data_science_project/img/location_plot.png" alt="Image" class="w3-left w3-margin-right" style="width:50px"></a>
+					   
+					        <span>Full data science project part 1</span>
+					      </li>
+					      <li class="w3-padding-16">
+					        <a href = "full_data_science_project/full_data_science_project_with_R(part_2).html"><img src="/full_data_science_project/img/strata-sample.gif" alt="Image" class="w3-left w3-margin-right" style="width:50px"></a>
+					        <span>Full data science project part 2</span>
+					      </li> 
+					      <li class="w3-padding-16">
+					        <a href= "/skinny_asian_guy/skinny_asian_guy.html"><img src="http://clipart-library.com/data_images/187613.gif" alt="Image" class="w3-left w3-margin-right" style="width:50px"></a>
+					   
+					        <span>How Bayesian Statistics convinced me to hit the gym</span>
+					      </li>   
+					    </ul>
+					</div>
+                </div>  			
+            </div>
+
+  			<!-- Third summary -->
+			<div class="w3-row w3-padding-64">
+    			<div class="w3-twothird w3-container" style = "margin-top: 10px">
+      				<h1 class="w3-text-teal"><a href="probability_dating/dating.html" style = "text-decoration:none">Finding the optimal dating strategy for 2019 with probability theory</a></h1>
+
+	      			<p>In the spirit of self-reflection, I dug up some Math to see where things have gone wrong with my sad social life. Check out my latest article to see if you may also need to optimize your dating game a little bit with probability theory. <a href="probability_dating/dating.html" style = "text-decoration:none; font-weight: bold"> Read more...</a></p>
+      				
+    			</div>
+    		</div>
+
+
+			<!-- Pagination: Navigate between pages -->
+			<div class = "w3-center w3-padding-32">
+				<div class = "w3-bar">
+					<a class = "w3-button w3-black" href="#">1</a>
+					<a class = "w3-button w3-hover-black" href="index_2.html">2</a>
+					<a class = "w3-button w3-hover-black" href="#">3</a>
+					<a class = "w3-button w3-hover-black" href="#">>></a>
+				</div>
+			</div>		
+
+			<!-- Footer, contact form and details -->
+			<footer class = "w3-padding-64 w3-light-gray w3-small w3-center" id="footer">
+				<div class = "w3-row-padding">
+					<div class = "w3-col s4">
+						<h4>Contact Form</h4>
+						<p>Got some ideas or cool projects?</p>
+						<!-- Need to see how to work out this-->
+						<form action = "/action_page.php" target="blank">
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Name" name="Name" required>
+							</p>
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Email" name="Email" required>
+							</p>
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Subject" name="Subject" required>
+							</p>
+							<p>
+								<input class="w3-input w3-border" type ="text" placeholder="Message" name="Message" required>
+							</p>
+							<button type = "submit" class ="w3-button w3-block w3-black">Send</button>	
+						</form>
+					</div>
+
+					<!-- Social media-->
+					<div class = "w3-right w3-col s4 w3-justify">
+						<h4>Contact</h4>
+						<p>
+							<i class="fa fa-fw fa-map-marker"></i> Yale University, New Haven
+						</p>
+						<p>
+							<i class= "fa fa-fw fa-phone"></i> (203)-435-6710
+						</p>
+						<p>
+							<i class="fa fa-fw fa-envelope"></i> tuan.nguyen.doan@aya.yale.edu
+						</p>
+						<a class="fa fa-facebook-official w3-hover-opacity w3-large" href = "https://www.facebook.com/tuan.doannguyen" style = "text-decoration:none"></a>
+						<a class="fa fa-linkedin w3-hover-opacity w3-large" href = "https://www.linkedin.com/in/tuan-nguyen-doan/" style = "text-decoration:none"></a>
+						<a class="fa fa-instagram w3-hover-opacity w3-large" href = "https://www.instagram.com/t.nguyen.1996/" style = "text-decoration:none"></a>
+						<a class="fa fa-github w3-hover-opacity w3-large" href = "https://github.com/tuangauss" style = "text-decoration:none"></a>
+					</div>		
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>

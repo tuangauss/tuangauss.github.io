@@ -79,11 +79,11 @@
 			</div>
 
 			<div class = "w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
-				<a href="/statistics.html" class="w3-bar-item w3-button">Statistics</a>
-				<a href="/machine_learning.html" class="w3-bar-item w3-button">Machine Learning</a>
+				<a href="/statistics/statistics.html" class="w3-bar-item w3-button">Statistics</a>
+				<a href="/machine_learning/machine_learning.html" class="w3-bar-item w3-button">Machine Learning</a>
 				<a href="#" class="w3-bar-item w3-button">Deep Learning</a>
 			</div>
-			<a href = "/resume.html" class = "w3-bar-item w3-button w3-padding">Resume</a>
+			<a href = "/resume/resume.html" class = "w3-bar-item w3-button w3-padding">Resume</a>
 			<a href = "#footer" class = "w3-bar-item w3-button w3-padding">Contact</a>
 		</nav>
 		<!-- Top menu on small screens -->
@@ -106,7 +106,7 @@
       				<p><b>This article focuses not on formula and numbers, but a fascinating story where Bayes’theorem establishes itself across the most controversial discussions in philosophy, epistemology and religions.</b></p>
       				<p>We Data Scientists and Statisticians love Bayes’ theorem.</p>
       				<p>A seemingly simple idea: we get updated and improved belief by updating our initial belief with newly acquired information, Bayes’ theorem has been touted as one of the most powerful method for generating knowledge.</p>
-      				<div class = "w3-container w3-center"><img src="./img/sheldon.jpeg" alt="sheldon" style="width:60%" class = "w3-center">
+      				<div class = "w3-container w3-center"><img src="img/sheldon.jpeg" alt="sheldon" style="width:60%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>Sheldon explaining how he is estimating his life expectancy, using Bayes’s theorem.</em> Image Source: Scientific America</p></div>
                     
  					<p>Alan Turing used Bayes to break Enigma — the Germany navy’s secret codes. We use Bayesian programs to whisk spam emails into junk bins (“Naive Bayes, anyone?”), assess our medical records, discovers how genes are controlled and regulated, assisted Coast guards and homeland security, etc.<a href = "#data_source" style = "text-decoration:none"><sup>[1]</sup></a> It is so popular that it even made a guest appearance on The Big Bang Theorem.</p>
@@ -135,19 +135,19 @@
 
 					<p>What Adam cares about, is <em>the conditional probability that the sun rises everyday</em>, given the observation that it rises today \(P(X|Y)\). Now, let us assign some number to illustrate the calculations:</p>
 
-      				<div class = "w3-container w3-center"><img src="./img/cal1.png" alt="cal1" style="width:80%" class = "w3-center">
+      				<div class = "w3-container w3-center"><img src="img/cal1.png" alt="cal1" style="width:80%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>How Adam arrived at the conditional probability after the first sunrise</em></p></div>
 
  					<p>Let’s say that before seeing the sunrise for the first time, Adam is incredulous and assigns a probability of merely 1% to the hypothesis that the sun rises everyday \(P(X)\). As he sees the sunrise, he is not convinced so he assigns a reasonable chance that the sunrise today is purely coincidental (i.e., \(P(Y|X^C) = \frac{1}{7}\) as there are 7 days of the week, but it could really be 1/30, 1/365 or 1/1000000). And if Adam knew and used Bayes’ Theorem to run these numbers, the probability he’d assign to the initial hypothesis increases from 1% to 6.6%.</p>
 
       				<p>The ingenuity of Bayes’ Theorem is that <b>we can update our probabilistic estimate multiple times as more evidence comes</b>. As Adam wakes up everyday and marvels at the magnificent sunrise, he constantly updates his priors, reruns the Bayesian formula, and gets the updated estimate of conditional probability for his hypothesis:</p>
                     
-                    <div class = "w3-container w3-center"><img src="./img/cal2.png" alt="cal2" style="width:80%" class = "w3-center">
+                    <div class = "w3-container w3-center"><img src="img/cal2.png" alt="cal2" style="width:80%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>How Adam arrived at the conditional probability after the <b>second</b> sunrise</em></p></div>
 
 					<p>Upon observing the second sunrise, Adam becomes more convinced about his hypothesis, increasing his conditional probability from 6.6% to 33.1%. This process repeats times and times again, and even though it will never mathematically reach 100%, it later becomes a literal impossibility that the sun rises only by chance.</p>
 
-					<div class = "w3-container w3-center"><img src="./img/cal3.png" alt="cal3" style="width:80%" class = "w3-center">
+					<div class = "w3-container w3-center"><img src="img/cal3.png" alt="cal3" style="width:80%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>Left: the posterior conditional probability of the statement “The sun rises everyday” as Adam updates his belief daily. Right: Comparison between two different initial priors (1% vs 0.01%)</em></p></div>
 
                     <p>With some simple R code, I repeated the calculations above and illustrated how Adam updated his belief. You can find the source code <a href = "https://github.com/tuangauss/Various-projects/blob/master/R/bayes_god.R" style = "text-decoration:none">here</a> It takes him as few as 4 days to be more than 99% convinced in the daily occurrence of sunrise. Even if Adam is a lot more skeptical (as he should have been against the snake or Satan T.T) and assigned the initial belief at a mere 0.01%, it still would take only 7 days to convince him.</p>
@@ -177,7 +177,7 @@
 					<p>This is based on this exact argument that Hume responds to testimonies of the resurrection of Jesus:</p>
 					<blockquote>When anyone tells me, that he saw a dead man restored to life, I immediately consider with myself, whether it be more probable, that this person should either deceive or be deceived, or that the fact, which he relates, should really have happened. I weigh the one miracle against the other; and according to the superiority, which I discover, I pronounce my decision, and always reject the greater miracle<a href = "#data_source_2" style = "text-decoration:none"><sup>[2]</sup></a>.</blockquote>
 					<p>The basis for his skepticism is that the probability of the resurrection <b>P(M=resurrection)</b> is significantly smaller than the probability of false testimonies <b>P(testimony|no resurrection)</b>, which makes <b>P(resurrection|testimony ) < 0.5</b>. More generally, it is next to impossible to find cases in which \(P(M) > P(T|M^C)\), and so we can never reliably associate a testimony with a cause — an actual miracle.</p>
-                	<div class = "w3-container w3-center"><img src="./img/img2.png" alt="img2" style="width:80%" class = "w3-center">
+                	<div class = "w3-container w3-center"><img src="img/img2.png" alt="img2" style="width:80%" class = "w3-center">
  					<p class = "w3-center" style = "margin-bottom: 15px; font-size: 15px"><em>Left: David Hume. Right: Thomas Bayes — although many argues that it is not his portrait. Source: Wikipedia</em></p></div>
  					<p>I hope you can see the unsettling nature of Hume’s argument. Hume believed that we can never be certain about anything based solely on traditional beliefs, coexistence, or testimony. Taking this idea even further, in a few essays that sent an intellectual shock across the 1700-Europe, Hume directed an attack at one of the oldest argument for God’s existence, <b>the teleological argument</b>. That is, <em>an intelligent creator is evidenced by the perceived deliberate design in the natural world and God is the First Cause of everything</em>. By establishing that our induction can seldom be reliable and criticizing cause-effect concepts altogether, Hume undermined the very core tenets of Christian’s beliefs.</p>
                 	
